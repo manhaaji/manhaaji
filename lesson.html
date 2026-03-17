@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منهجي | شرح المنهج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0056b3; --secondary: #00a8cc; --accent: #ff6b6b;
+            --dark: #2c3e50; --light: #f4f7f6; --white: #ffffff;
+            --success: #28a745; --gradient: linear-gradient(135deg, #0056b3, #00a8cc);
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--light); margin: 0; color: var(--dark); overflow-x: hidden; }
+        
+        /* ---------------- الهيدر ---------------- */
+        header { background: var(--white); padding: 12px 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
+        .logo-icon { font-size: 1.8rem; color: var(--primary); }
+        .logo-text h1 { font-family: 'Poppins', sans-serif; font-size: 1.5rem; color: var(--primary); margin: 0;}
+        .logo-text p { font-size: 0.75rem; color: #7f8c8d; font-weight: 600; margin: 0;}
+        .header-btn { background: var(--light); color: var(--primary); border: 1px solid var(--secondary); padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Cairo'; font-size: 0.9rem;}
+        .header-btn:hover { background: var(--primary); color: var(--white); }
+
+        /* ---------------- المحتوى ---------------- */
+        .container { max-width: 1400px; margin: 20px auto; padding: 0 15px; animation: fadeIn 0.6s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .lesson-title-area { background: var(--gradient); color: var(--white); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); text-align: center; }
+        .lesson-title-area h2 { font-size: 1.8rem; margin: 0 0 10px 0; }
+        .lesson-title-area p { font-size: 0.95rem; margin: 0; opacity: 0.9; line-height: 1.6; background: rgba(0,0,0,0.15); padding: 8px 15px; border-radius: 8px; display: inline-block; max-width: 90%;}
+
+        .layout-grid { display: grid; grid-template-columns: 2.8fr 1.2fr; gap: 20px; align-items: start; }
+
+        /* ---------------- منطقة الـ PDF ---------------- */
+        .pdf-section { background: var(--white); padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); }
+        .pdf-section h3 { margin: 0 0 15px 0; font-size: 1.2rem; color: var(--primary); }
+        .pdf-container { 
+            width: 100%; 
+            height: 75vh; /* ارتفاع متجاوب مع حجم الشاشة */
+            min-height: 400px;
+            border-radius: 8px; 
+            overflow: hidden; 
+            border: 1px solid #e0e0e0; 
+            -webkit-overflow-scrolling: touch; /* لتحسين السحب على الآيفون */
+        }
+        .pdf-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* ---------------- الأدوات الجانبية ---------------- */
+        .tools-section { display: flex; flex-direction: column; gap: 15px; }
+        .tool-card { background: var(--white); padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border-right: 4px solid var(--secondary); transition: 0.3s; }
+        .tool-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .tool-card h3 { font-size: 1.1rem; margin: 0 0 15px 0; color: var(--primary); }
+        
+        .action-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: none; font-family: 'Cairo'; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; color: var(--white); }
+        .btn-download { background: var(--success); }
+        .btn-download:hover { background: #218838; box-shadow: 0 4px 10px rgba(40,167,69,0.3); }
+        .btn-test { background: var(--accent); }
+        .btn-test:hover { background: #c0392b; box-shadow: 0 4px 10px rgba(255,107,107,0.3); }
+
+        .video-wrapper { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; border: 2px solid var(--primary); transition: 0.3s; }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; pointer-events: none; }
+        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; color: white; font-size: 2.5rem; transition: 0.3s; }
+        .video-wrapper:hover .video-overlay { background: rgba(0,0,0,0.1); transform: scale(1.05); }
+
+        /* ---------------- أزرار التنقل ---------------- */
+        .navigation-area { display: flex; justify-content: space-between; margin-top: 20px; background: var(--white); padding: 15px 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .nav-btn { background: var(--primary); color: var(--white); border: none; padding: 8px 20px; border-radius: 6px; font-family: 'Cairo'; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .nav-btn:hover:not(:disabled) { background: var(--secondary); transform: scale(1.05); }
+        .nav-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+        /* ---------------- الرسالة المنبثقة (Modal) ---------------- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-box { background: var(--white); padding: 30px; border-radius: 15px; text-align: center; max-width: 90%; width: 500px; transform: scale(0.8); transition: 0.3s; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-box i { font-size: 3.5rem; color: var(--success); margin-bottom: 15px; }
+        .modal-box h2 { color: var(--primary); margin: 0 0 10px 0; font-size: 1.6rem; }
+        .modal-box p { color: var(--text-muted); margin-bottom: 20px; font-size: 1rem; line-height: 1.6;}
+        .modal-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;}
+        .btn-modal { padding: 10px 15px; border-radius: 6px; border: none; font-family: 'Cairo'; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; color: white;}
+        .btn-exam { background: var(--accent); }
+        .btn-next-unit { background: var(--primary); }
+
+        /* ---------------- الموبايل (Responsive) ---------------- */
+        @media (max-width: 900px) { 
+            .layout-grid { grid-template-columns: 1fr; } 
+            .pdf-container { height: 60vh; }
+            .lesson-title-area h2 { font-size: 1.4rem; }
+            .nav-btn { font-size: 0.9rem; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-area">
+            <i class="fas fa-layer-group logo-icon"></i>
+            <div class="logo-text">
+                <h1>Manhajo</h1>
+                <p>طريقك لفهم المنهج وإتقان العلم</p>
+            </div>
+        </a>
+        <button class="header-btn" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> الرئيسية</button>
+    </header>
+
+    <div class="container" id="main-content" style="display: none;">
+        <div class="lesson-title-area">
+            <h2 id="unitTitle">جاري التحميل...</h2>
+            <p id="unitDescription">جاري جلب تفاصيل الشرح...</p>
+        </div>
+
+        <div class="layout-grid">
+            <div class="pdf-section">
+                <h3><i class="fas fa-file-pdf"></i> عرض المذكرة والشرح</h3>
+                <div class="pdf-container">
+                    <iframe id="pdfFrame" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+                </div>
+            </div>
+
+            <div class="tools-section">
+                <div class="tool-card">
+                    <h3><i class="fas fa-tools"></i> أدوات الوحدة</h3>
+                    <button class="action-btn btn-download" onclick="downloadPDF()"><i class="fas fa-download"></i> تحميل الـ PDF</button>
+                    <button class="action-btn btn-test" onclick="goToQuiz()"><i class="fas fa-laptop-code"></i> تدريبات الوحدة</button>
+                </div>
+                <div class="tool-card">
+                    <h3><i class="fab fa-youtube"></i> فيديو الشرح</h3>
+                    <div class="video-wrapper" onclick="openVideoFull()">
+                        <iframe id="videoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="video-overlay"><i class="far fa-play-circle"></i></div>
+                    </div>
+                    <p style="font-size:0.8rem; color:#777; margin-top:8px; margin-bottom: 0;">اضغط لتكبير الفيديو</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-area">
+            <button class="nav-btn" id="prevUnitBtn" onclick="changeUnit(-1)"><i class="fas fa-chevron-right"></i> السابق</button>
+            <button class="nav-btn" id="nextUnitBtn" onclick="changeUnit(1)">التالي <i class="fas fa-chevron-left"></i></button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="unitCompleteModal">
+        <div class="modal-box">
+            <i class="fas fa-trophy"></i>
+            <h2 id="modalTitle">عاش يا بطل! اكتملت الوحدة</h2>
+            <p>لقد أنهيت شرح هذه الوحدة بنجاح. هل أنت مستعد لاختبار مستواك أم تفضل الاستمرار في الشرح للوحدة التالية؟</p>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-exam" onclick="goToQuiz()"><i class="fas fa-spell-check"></i> تدريبات الوحدة</button>
+                <button class="btn-modal btn-next-unit" onclick="closeModalAndContinue()">استمرار للتالي <i class="fas fa-forward"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let units = [];
+        let currentUnitIndex = 0;
+        let currentSubject = "";
+
+        // النظام الذكي لقراءة الرابط
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentSubject = urlParams.get('subject'); 
+            const requestedUnit = parseInt(urlParams.get('unit'));
+
+            if (!currentSubject) {
+                alert("خطأ: لم يتم تحديد المادة!");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // استدعاء ملف الداتا الخاص بـ (الشرح)
+            const script = document.createElement('script');
+            script.src = `data/${currentSubject}.js`;
+            
+            script.onload = function() {
+                if (window.lessonData && window.lessonData.units) {
+                    units = window.lessonData.units;
+                    if(requestedUnit && requestedUnit > 0 && requestedUnit <= units.length) {
+                        currentUnitIndex = requestedUnit - 1;
+                    }
+                    document.getElementById('main-content').style.display = 'block';
+                    loadUnit();
+                } else {
+                    alert("خطأ في قراءة بيانات المادة.");
+                }
+            };
+            script.onerror = function() { alert("عفواً، بيانات هذه المادة غير متوفرة حالياً."); window.location.href='index.html'; };
+            document.head.appendChild(script);
+        };
+
+        function loadUnit() {
+            const unit = units[currentUnitIndex];
+            document.getElementById('unitTitle').innerText = unit.title;
+            document.getElementById('unitDescription').innerHTML = `<strong>${window.lessonData.pageTitle}</strong><br>${unit.description}`;
+            
+            // التأكد من أن الرابط يعمل كـ Preview
+            let pdfLink = unit.pdf;
+            if(pdfLink && pdfLink.includes('/view')) {
+                pdfLink = pdfLink.replace('/view', '/preview');
+            }
+            document.getElementById('pdfFrame').src = pdfLink;
+            document.getElementById('videoFrame').src = unit.vid;
+            
+            document.getElementById('prevUnitBtn').disabled = (currentUnitIndex === 0);
+            
+            if(currentUnitIndex === units.length - 1) {
+                document.getElementById('nextUnitBtn').innerHTML = 'ختام المنهج <i class="fas fa-flag-checkered"></i>';
+            } else {
+                document.getElementById('nextUnitBtn').innerHTML = 'الدرس/الوحدة التالية <i class="fas fa-chevron-left"></i>';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeUnit(direction) {
+            if(direction === 1) {
+                if(currentUnitIndex === units.length - 1) {
+                    alert("عاش يا بطل! لقد أتممت المنهج بالكامل."); return;
+                }
+                // إظهار المودال
+                const modal = document.getElementById('unitCompleteModal');
+                document.getElementById('modalTitle').innerText = `عاش يا بطل! اكتملت ${units[currentUnitIndex].title}`;
+                modal.classList.add('active');
+                return;
+            }
+            if(direction === -1 && currentUnitIndex > 0) {
+                currentUnitIndex--; loadUnit();
+            }
+        }
+
+        function closeModalAndContinue() { 
+            document.getElementById('unitCompleteModal').classList.remove('active'); 
+            currentUnitIndex++; 
+            
+            // تحديث الرابط في المتصفح بدون ريفرش
+            const url = new URL(window.location);
+            url.searchParams.set('unit', currentUnitIndex + 1);
+            window.history.pushState({}, '', url);
+            
+            loadUnit(); 
+        }
+        
+        function downloadPDF() { 
+            const url = units[currentUnitIndex].pdf.replace('/preview', '/view'); 
+            window.open(url, '_blank'); 
+        }
+        
+                function goToQuiz() { 
+            // النظام الذكي: لو الملف اسمه arabic_g1_t1 هيضيف عليه _revision ويوجهك صح
+            const revisionSubject = currentSubject.includes('_lesson') ? currentSubject.replace('_lesson', '_revision') : currentSubject + '_revision';
+            window.location.href = `revision.html?subject=${revisionSubject}&ch=${currentUnitIndex + 1}`;
+        }
+
+        
+        function openVideoFull() { 
+            const iframe = document.getElementById('videoFrame'); 
+            if (iframe.requestFullscreen) { iframe.requestFullscreen(); } 
+            else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); } 
+        }
+    </script>
+</body>
+</html>
