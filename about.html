@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منهجي | المؤسس والمدير التنفيذي</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0056b3; --secondary: #00a8cc; --accent: #ff6b6b;
+            --dark: #2c3e50; --light: #f4f7f6; --white: #ffffff; --gold: #ffd700;
+            --text-muted: #7f8c8d; --gradient: linear-gradient(135deg, #0056b3, #00a8cc);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--light); color: var(--dark); overflow-x: hidden; font-size: 16px; line-height: 1.6; }
+        
+        /* ---------------- الهيدر الموحد ---------------- */
+        header { background: var(--white); padding: 10px 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .custom-logo { width: 85px; height: 85px; object-fit: contain; margin-left: 5px; }
+        .logo-text h1 { font-family: 'Poppins', sans-serif; font-size: 1.6rem; color: var(--primary); margin: 0;}
+        .header-btn { background: var(--light); color: var(--primary); border: 1px solid var(--secondary); padding: 6px 12px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Cairo'; font-size: 0.85rem;}
+        .header-btn:hover { background: var(--primary); color: var(--white); }
+
+        /* ---------------- الهيرو (التعريف) ---------------- */
+        .about-hero { background: var(--gradient); padding: 60px 20px 90px; text-align: center; color: var(--white); position: relative; }
+        .profile-container { position: relative; width: 180px; height: 180px; margin: 0 auto 15px; z-index: 2; }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; border: 5px solid rgba(255,255,255,0.3); object-fit: cover; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .badge { position: absolute; bottom: 5px; right: 5px; background: var(--gold); color: #333; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; border: 3px solid var(--white); box-shadow: 0 4px 8px rgba(0,0,0,0.15);}
+        
+        .about-hero h1 { font-size: 2.4rem; margin-bottom: 5px; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.15); }
+        .about-hero h3 { font-size: 1.1rem; font-weight: 600; opacity: 0.95; margin-bottom: 10px; color: var(--white); background: rgba(0,0,0,0.1); display: inline-block; padding: 4px 12px; border-radius: 4px;}
+        
+        /* الجملة الجديدة الاحترافية */
+        .tagline { font-size: 1.05rem; opacity: 0.9; max-width: 650px; margin: 0 auto 20px; line-height: 1.7; font-weight: 600;}
+
+        /* أيقونات التواصل الصغيرة فوق */
+        .top-social { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .top-social-btn { width: 35px; height: 35px; border-radius: 50%; background: var(--white); display: flex; justify-content: center; align-items: center; font-size: 1.1rem; text-decoration: none; transition: 0.3s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        .top-social-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.15); }
+
+        /* ---------------- المحتوى ---------------- */
+        .container { max-width: 1000px; margin: -50px auto 40px; padding: 0 20px; position: relative; z-index: 10; }
+        
+        .content-card { background: var(--white); padding: 30px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-bottom: 25px; }
+        .content-card h2 { color: var(--primary); font-size: 1.6rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 12px;}
+        .content-card p { font-size: 1rem; line-height: 1.85; color: #555; margin-bottom: 15px; }
+
+        /* ---------------- التايم لاين ---------------- */
+        .timeline { position: relative; border-right: 3px solid var(--secondary); padding-right: 25px; margin-top: 15px; }
+        .timeline-item { position: relative; margin-bottom: 25px; }
+        .timeline-item::before { content: ''; position: absolute; right: -36px; top: 0; width: 18px; height: 18px; background: var(--accent); border: 3px solid var(--white); border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+        .timeline-date { font-size: 0.8rem; color: var(--white); background: var(--primary); padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+        .timeline-title { font-size: 1.2rem; color: var(--dark); margin-bottom: 4px; font-weight: 700; }
+        .timeline-company { font-size: 0.95rem; color: var(--secondary); margin-bottom: 8px; font-weight: 600; }
+        .timeline-desc { font-size: 0.95rem; color: #666; line-height: 1.7; }
+        .timeline-desc ul { padding-right: 18px; margin-top: 8px; }
+        .timeline-desc li { margin-bottom: 6px; }
+
+        /* ---------------- الشهادات والمهارات ---------------- */
+        .skill-tag { background: #f0f7ff; color: var(--primary); border: 1px solid #cce5ff; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: 0.3s; margin: 4px;}
+        .skill-tag:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,86,179,0.15); }
+        .skill-tag i { font-size: 1rem; }
+
+        /* شبكة الشهادات المحدثة */
+        .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+        .cert-card { background: var(--light); padding: 12px; border-radius: 8px; border-right: 3px solid var(--gold); }
+        .cert-card h4 { color: var(--dark); font-size: 1rem; margin-bottom: 3px; font-weight: 700; }
+        .cert-card p { color: var(--text-muted); font-size: 0.8rem; margin: 0; font-weight: 600; font-family: 'Poppins', 'Cairo'; }
+
+        /* ---------------- التواصل ---------------- */
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 15px; }
+        .contact-item { background: var(--light); padding: 15px; border-radius: 12px; text-align: center; text-decoration: none; color: var(--dark); transition: 0.3s; border: 1px solid #eee; display: flex; flex-direction: column; align-items: center; }
+        .contact-item:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.05); border-color: var(--secondary); background: var(--white); }
+        .contact-item i { font-size: 2rem; margin-bottom: 10px; }
+        .contact-item h4 { font-size: 1rem; margin-bottom: 3px; font-weight: 700;}
+        .contact-item p { font-size: 0.8rem; color: var(--text-muted); direction: ltr; font-family: 'Poppins', sans-serif;}
+        
+        /* ألوان التواصل الصغيرة فوق */
+        .whatsapp-top { color: #25D366; } .facebook-top { color: #1877F2; } .instagram-top { color: #E1306C; } .telegram-top { color: #0088cc; }
+
+        /* تأثيرات الظهور */
+        .hidden-element { opacity: 0; transform: translateY(30px); transition: all 0.7s ease-out; }
+        .show-element { opacity: 1; transform: translateY(0); }
+
+        footer { background: var(--dark); color: var(--white); text-align: center; padding: 15px; font-size: 0.9rem; }
+
+        @media (max-width: 768px) { 
+            .about-hero h1 { font-size: 2rem; }
+            .tagline { font-size: 0.95rem; }
+            .timeline { padding-right: 18px; }
+            .timeline-item::before { right: -28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-area">
+            <img src="images/logo.png" alt="شعار منهجي" class="custom-logo">
+            <div class="logo-text"><h1>Manhaaji</h1></div>
+        </a>
+        <button class="header-btn" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> الرئيسية</button>
+    </header>
+
+    <section class="about-hero">
+        <div class="profile-container">
+            <img src="images/profile.jpg" alt="مازن خالد شعبان" class="profile-img" onerror="this.src='https://via.placeholder.com/180/0056b3/ffffff?text=Mazen'">
+            <div class="badge"><i class="fas fa-crown"></i></div>
+        </div>
+        <h1 class="hidden-element">مازن خالد شعبان</h1>
+        <h3 class="hidden-element">المؤسس والمدير التنفيذي لمنصة منهجي</h3>
+        
+        <p class="tagline hidden-element">نسخر فنون التصميم وقوة التكنولوجيا لابتكار تجارب تعليمية بصرية تفاعلية لا تُنسى.</p>
+        
+        <div class="top-social hidden-element">
+            <a href="https://wa.me/201019094352" target="_blank" class="top-social-btn"><i class="fab fa-whatsapp whatsapp-top"></i></a>
+            <a href="https://www.facebook.com/share/1EHCheb4D4/" target="_blank" class="top-social-btn"><i class="fab fa-facebook-f facebook-top"></i></a>
+            <a href="https://www.instagram.com/mazen.ve" target="_blank" class="top-social-btn"><i class="fab fa-instagram instagram-top"></i></a>
+            <a href="https://t.me/Mazen_ve" target="_blank" class="top-social-btn"><i class="fab fa-telegram-plane telegram-top"></i></a>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <div class="content-card hidden-element">
+            <h2><i class="fas fa-user-tie"></i> نبذة عني</h2>
+            <p>أهلاً بك في منصة <strong>"منهجي"</strong>. أنا مازن خالد، مصمم جرافيك، مونتير، ومطور واجهات مستخدم (UI/UX) ممارس للمهنة بشغف منذ عام 2018. أدمج خبرتي الفنية في التصميم والمونتاج مع صياغة المحتوى التعليمي، بهدف تقديم مادة علمية منظمة، تفاعلية، ومريحة بصرياً للطالب.</p>
+            <p>بنيت هذه المنصة لتكون الرفيق الأذكى، حيث يحصل الطالب على شرح مبسط ومراجعات منظمة، وتدريبات ذكية مبنية على تقنيات الذكاء الاصطناعي وتجربة المستخدم، مما يضمن أفضل النتائج بأقل مجهود.</p>
+        </div>
+
+        <div class="content-card hidden-element">
+            <h2><i class="fas fa-briefcase"></i> المسيرة المهنية</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <span class="timeline-date">2024 - PRESENT</span>
+                    <h3 class="timeline-title">المؤسس والمدير التنفيذي (CEO)</h3>
+                    <div class="timeline-company">منصة منهجي التعليمية (Manhaaji)</div>
+                    <div class="timeline-desc">قيادة وتطوير منصة تعليمية متكاملة، برمجة واجهات المستخدم، وبناء نظام امتحانات تفاعلي ذكي يُحاكي احتياجات الطالب العصرية.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2021 - PRESENT</span>
+                    <h3 class="timeline-title">مصمم هويات رقمية ومواد دعائية للبطولات</h3>
+                    <div class="timeline-company">منصات الألعاب والرياضات الإلكترونية (مثل WePlay)</div>
+                    <div class="timeline-desc">
+                        <ul>
+                            <li>تصميم شارات وألقاب مخصصة لغرف الـ VIP (VIP8 custom title badges).</li>
+                            <li>ابتكار بانرات للمسابقات، خلفيات ألعاب، وهويات بصرية للقبائل والفرق التنافسية.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2019 - PRESENT</span>
+                    <h3 class="timeline-title">مصمم جرافيك ومحرر فيديو (Senior Freelancer)</h3>
+                    <div class="timeline-company">منصة خمسات ومشاريع مستقلة</div>
+                    <div class="timeline-desc">
+                        <ul>
+                            <li>التخصص في الهويات البصرية السينمائية الفخمة (الذهبي، الرخامي، الزخارف الملكية).</li>
+                            <li>تطوير علامات تجارية متكاملة (مثل مشروع يوميل بأنماطه البصرية الثلاثة).</li>
+                            <li>دمج تقنيات الذكاء الاصطناعي في الفن الرقمي والمحتوى الصوتي والمرئي (MAZEN AI BEATS).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2023 - 2024</span>
+                    <h3 class="timeline-title">مسؤول إداري (Admin / HR)</h3>
+                    <div class="timeline-company">نادي رياضي (محلي)</div>
+                    <div class="timeline-desc">إدارة شؤون الموظفين والمدربين، تنظيم الرواتب، واستخدام متقدم لـ Excel لبناء معادلات محاسبية دقيقة وتصميم قوالب تنظيمية منسقة الألوان.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2018 - 2022</span>
+                    <h3 class="timeline-title">صانع محتوى تعليمي (Instructor)</h3>
+                    <div class="timeline-company">منصة YouTube</div>
+                    <div class="timeline-desc">تأسيس قناة تعليمية لشرح برامج التصميم والمونتاج، والوصول إلى قاعدة جماهيرية بلغت 18,000 مشترك عبر شروحات مرئية تطبيقية.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="content-card hidden-element">
+            <h2><i class="fas fa-certificate"></i> الشهادات والاعتمادات الدولية (12 شهادة)</h2>
+            <div class="cert-grid">
+                <div class="cert-card"><h4>UI/UX Design for Dashboards</h4><p>Coursera | 2021</p></div>
+                <div class="cert-card"><h4>Mastering Video Editing with Premiere Pro</h4><p>Udemy | 2019</p></div>
+                <div class="cert-card"><h4>Advanced Visual Communication</h4><p>Alison | Feb 2019</p></div>
+                <div class="cert-card"><h4>E-Sports Branding & Digital Assets</h4><p>Skillshare | 2022</p></div>
+                <div class="cert-card"><h4>Digital Layouts & Print Design</h4><p>Alison | Oct 2019</p></div>
+                <div class="cert-card"><h4>Data Management & Excel Formulas</h4><p>Udemy | Jan 2023</p></div>
+                <div class="cert-card"><h4>Professional Blogging & Content Writing</h4><p>Udemy | Jul 2019</p></div>
+                <div class="cert-card"><h4>Advanced Microsoft Office</h4><p>Alison | Mar 2020</p></div>
+                <div class="cert-card"><h4>SEO Copywriting & Content Creation</h4><p>Skillshare | Nov 2020</p></div>
+                <div class="cert-card"><h4>Commercial Graphic Design & Branding</h4><p>Alison | May 2021</p></div>
+                <div class="cert-card"><h4>Social Media Mgmt & Advertising</h4><p>Coursera | Aug 2021</p></div>
+                <div class="cert-card"><h4>Social Media Post Design</h4><p>Coursera | Sep 2022</p></div>
+            </div>
+        </div>
+
+        <div class="content-card hidden-element">
+            <h2><i class="fas fa-laptop-code"></i> المهارات الأساسية</h2>
+            <div class="skills-container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+                <div class="skill-tag"><i class="fas fa-palette"></i> Graphic Design (Ps, Ai, Lr)</div>
+                <div class="skill-tag"><i class="fas fa-video"></i> Video Editing (Pr, CapCut)</div>
+                <div class="skill-tag"><i class="fas fa-mobile-alt"></i> UI/UX Design (Figma)</div>
+                <div class="skill-tag"><i class="fas fa-robot"></i> AI Art & Content Integration</div>
+                <div class="skill-tag"><i class="fas fa-table"></i> Advanced MS Excel (Formulas)</div>
+                <div class="skill-tag"><i class="fas fa-bolt"></i> السرعة والاحترافية في التنفيذ</div>
+                <div class="skill-tag"><i class="fas fa-users"></i> القيادة وحل المشكلات الإدارية</div>
+            </div>
+        </div>
+
+        <div class="content-card hidden-element" style="padding-bottom: 20px;">
+            <h2 style="border: none; margin-bottom: 10px; justify-content: center;"><i class="fas fa-address-card"></i> تواصل معي</h2>
+            <p style="text-align: center; margin-bottom: 20px;">مستعد للعمل عن بُعد والتعاون في مشاريع التصميم، المونتاج، وتطوير واجهات المستخدم.</p>
+            
+            <div class="contact-grid">
+                <a href="https://wa.me/201019094352" target="_blank" class="contact-item">
+                    <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                    <h4>WhatsApp</h4>
+                    <p>+20 101 909 4352</p>
+                </a>
+                <a href="https://www.facebook.com/share/1EHCheb4D4/" target="_blank" class="contact-item">
+                    <i class="fab fa-facebook-f" style="color: #1877F2;"></i>
+                    <h4>Facebook</h4>
+                    <p>Mazen Khaled</p>
+                </a>
+                <a href="https://www.instagram.com/mazen.ve" target="_blank" class="contact-item">
+                    <i class="fab fa-instagram" style="color: #E1306C;"></i>
+                    <h4>Instagram</h4>
+                    <p>@mazen.ve</p>
+                </a>
+                <a href="https://t.me/Mazen_ve" target="_blank" class="contact-item">
+                    <i class="fab fa-telegram-plane" style="color: #0088cc;"></i>
+                    <h4>Telegram</h4>
+                    <p>@Mazen_ve</p>
+                </a>
+                <a href="mailto:mazen1862002@yahoo.com" class="contact-item">
+                    <i class="fas fa-envelope" style="color: #D44638;"></i>
+                    <h4>Email</h4>
+                    <p>mazen1862002</p>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 منصة منهجي (Manhaaji.com) | تصميم وتطوير مازن خالد</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = { root: null, rootMargin: "0px", threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show-element');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const hiddenElements = document.querySelectorAll('.hidden-element');
+            hiddenElements.forEach(el => observer.observe(el));
+            
+            // ظهور فوري لعناصر الهيرو
+            setTimeout(() => {
+                const heroElements = document.querySelectorAll('.about-hero .hidden-element');
+                heroElements.forEach(el => el.classList.add('show-element'));
+            }, 50);
+        });
+    </script>
+</body>
+</html>

@@ -3,93 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة منهجي | طريقك لفهم المنهج وإتقان العلم</title>
+    <title>منهاجي | طريقك لفهم المنهج وإتقان العلم</title>
+    
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0056b3">
+
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #0056b3;
-            --secondary: #00a8cc;
-            --accent: #ff6b6b;
-            --dark: #2c3e50;
-            --light: #f4f7f6;
-            --white: #ffffff;
-            --text-muted: #7f8c8d;
+            --primary: #0056b3; --secondary: #00a8cc; --accent: #ff6b6b;
+            --dark: #2c3e50; --light: #f4f7f6; --white: #ffffff;
+            --success: #28a745; --text-muted: #7f8c8d; 
             --gradient: linear-gradient(135deg, #0056b3, #00a8cc);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            overflow-x: hidden;
-        }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--light); color: var(--dark); overflow-x: hidden; }
 
         /* ------------------ Header & Sidebar ------------------ */
-        header {
-            background: var(--white);
-            padding: 15px 5%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .logo-icon { font-size: 2rem; color: var(--primary); }
+        header { background: var(--white); padding: 15px 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none;}
+        .custom-logo { width: 85px; height: 85px; object-fit: contain; margin-left: 5px;}
         .logo-text h1 { font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: var(--primary); margin: 0;}
         .logo-text p { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin: 0;}
 
         .menu-toggle { font-size: 1.8rem; color: var(--primary); background: transparent; border: none; cursor: pointer; }
 
-        .sidebar {
-            position: fixed; top: 0; right: -300px; width: 280px; height: 100vh;
-            background-color: var(--white); box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            transition: 0.4s ease; z-index: 2000; display: flex; flex-direction: column;
-        }
+        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background-color: var(--white); box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s ease; z-index: 2000; display: flex; flex-direction: column; }
         .sidebar.active { right: 0; }
-        .sidebar-header { padding: 30px 20px; background: var(--gradient); color: var(--white); text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 15px; left: 15px; background: transparent; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+        .sidebar-header { padding: 30px 20px; background: var(--gradient); color: #fff; text-align: center; position: relative; }
+        .close-btn { position: absolute; top: 15px; left: 15px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
         .sidebar-menu { list-style: none; padding: 20px 0; flex: 1; overflow-y: auto; }
-        .sidebar-menu li { padding: 15px 25px; border-bottom: 1px solid #eee; transition: 0.3s; }
-        .sidebar-menu li:hover { background-color: #f8f9fa; padding-right: 35px; }
+        .sidebar-menu li { padding: 15px 25px; border-bottom: 1px solid rgba(127, 140, 141, 0.1); transition: 0.3s; }
+        .sidebar-menu li:hover { background-color: rgba(0, 86, 179, 0.05); padding-right: 35px; }
         .sidebar-menu a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; }
         .sidebar-menu i { color: var(--secondary); font-size: 1.2rem; width: 25px; }
 
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 1500; display: none; opacity: 0; transition: 0.4s;
-        }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1500; display: none; opacity: 0; transition: 0.4s; }
         .overlay.active { display: block; opacity: 1; }
 
         /* ------------------ Hero Section ------------------ */
-        .hero {
-            background: var(--gradient); color: var(--white); text-align: center;
-            padding: 60px 20px; border-radius: 0 0 50px 50px; margin-bottom: 40px;
-        }
+        .hero { background: var(--gradient); color: #fff; text-align: center; padding: 60px 20px; border-radius: 0 0 50px 50px; margin-bottom: 40px; }
         .hero h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; }
         .hero p { font-size: 1.2rem; opacity: 0.9; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; min-height: 50vh; }
+        
         .section-title { text-align: center; font-size: 2rem; color: var(--dark); margin-bottom: 40px; position: relative; }
         .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--accent); border-radius: 2px; }
 
         /* ------------------ Grid & Cards ------------------ */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px; margin-bottom: 60px;
-        }
-        .card {
-            background: var(--white); border-radius: 15px; padding: 30px 20px; text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border-bottom: 5px solid var(--secondary);
-            cursor: pointer; display: block; text-decoration: none; color: inherit;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 60px; }
+        .card { background: var(--white); border-radius: 15px; padding: 30px 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border-bottom: 5px solid var(--secondary); cursor: pointer; display: block; text-decoration: none; color: inherit; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--primary); }
         .card i { font-size: 3rem; color: var(--secondary); margin-bottom: 15px; transition: 0.3s; }
         .card:hover i { color: var(--primary); transform: scale(1.1); }
@@ -100,47 +68,58 @@
         #dynamic-flow { display: none; animation: fadeIn 0.5s ease; }
         .flow-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--white); padding: 15px 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .flow-title { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin: 0;}
-        .back-btn { background: var(--light); color: var(--dark); border: 1px solid #ddd; padding: 8px 20px; border-radius: 25px; font-family: 'Cairo'; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;}
-        .back-btn:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
+        .back-btn { background: var(--light); color: var(--dark); border: 1px solid rgba(127, 140, 141, 0.3); padding: 8px 20px; border-radius: 25px; font-family: 'Cairo'; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;}
+        .back-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
         .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
         .option-btn { background: var(--white); border: 2px solid var(--secondary); border-radius: 12px; padding: 25px 15px; font-size: 1.3rem; font-family: 'Cairo'; font-weight: 700; color: var(--secondary); cursor: pointer; transition: 0.3s; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .option-btn i { display: block; font-size: 2.5rem; margin-bottom: 10px; }
-        .option-btn:hover { background: var(--secondary); color: var(--white); transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 168, 204, 0.3); }
+        .option-btn:hover { background: var(--secondary); color: #fff; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 168, 204, 0.3); }
 
-        /* ------------------ Loading Spinner ------------------ */
-        #loader {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.9); z-index: 3000; justify-content: center; align-items: center; flex-direction: column;
-        }
-        .spinner { width: 60px; height: 60px; border: 6px solid var(--light); border-top: 6px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
-        .loader-text { font-family: 'Cairo'; font-size: 1.2rem; color: var(--primary); font-weight: 700; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ------------------ About Us ------------------ */
+        /* ------------------ About Us Section ------------------ */
         .about-section { background: var(--white); border-radius: 20px; padding: 40px; display: flex; align-items: center; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 60px; }
         .about-image { width: 180px; height: 180px; border-radius: 50%; border: 5px solid var(--light); box-shadow: 0 5px 15px rgba(0,0,0,0.1); object-fit: cover; }
         .about-text h3 { font-size: 2rem; color: var(--primary); margin-bottom: 5px; }
         .about-text h4 { font-size: 1.1rem; color: var(--accent); margin-bottom: 15px; }
-        .about-text p { font-size: 1.1rem; line-height: 1.8; color: #555; }
+        .about-text p { font-size: 1.1rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 20px;}
+        .btn-more { display: inline-flex; align-items: center; gap: 8px; padding: 10px 25px; background: var(--gradient); color: #fff; text-decoration: none; border-radius: 25px; font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 86, 179, 0.2); }
+        .btn-more:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 86, 179, 0.4); color: #fff;}
+
+        /* ------------------ Loading Spinner ------------------ */
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--light); z-index: 3000; justify-content: center; align-items: center; flex-direction: column; }
+        .spinner { width: 60px; height: 60px; border: 6px solid rgba(0,0,0,0.1); border-top: 6px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        .loader-text { font-family: 'Cairo'; font-size: 1.2rem; color: var(--primary); font-weight: 700; }
+        
+        /* ------------------ Modal للتطبيق ------------------ */
+        .modal-overlay-app { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 5000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
+        .modal-overlay-app.active { display: flex; opacity: 1; }
+        .modal-box-app { background: var(--white); padding: 35px 25px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; transform: scale(0.8); transition: 0.3s; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .modal-overlay-app.active .modal-box-app { transform: scale(1); }
+        .modal-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        
+        .btn-action-app { padding: 12px 20px; border-radius: 12px; font-family: 'Cairo'; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; }
+        .btn-install { background: var(--success); color: white; box-shadow: 0 4px 10px rgba(40,167,69,0.3); }
+        .btn-install:hover { background: #218838; transform: translateY(-2px); }
+        .btn-skip { background: #eee; color: var(--dark); }
+        .btn-skip:hover { background: #ddd; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         @media (max-width: 768px) { .about-section { flex-direction: column; text-align: center; } .flow-header { flex-direction: column; gap: 15px; text-align: center; } }
 
-        footer { background: var(--dark); color: var(--white); text-align: center; padding: 20px; font-size: 1rem; }
+        footer { background: #1a1a1a; color: #fff; text-align: center; padding: 20px; font-size: 1rem; border-top: 2px solid var(--primary); }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <div class="loader-text">جاري التحميل...</div>
-    </div>
+    <div id="loader"><div class="spinner"></div><div class="loader-text">جاري التحميل...</div></div>
 
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button class="close-btn" onclick="toggleMenu()"><i class="fas fa-times"></i></button>
-            <h2>منهجي</h2>
+            <h2>منهاجي</h2>
             <p>اختر مسارك التعليمي</p>
         </div>
         <ul class="sidebar-menu">
@@ -151,31 +130,30 @@
             <li><a href="#" onclick="startFlow('التعليم التجاري'); toggleMenu();"><i class="fas fa-calculator"></i> التعليم التجاري</a></li>
             <li><a href="#" onclick="startFlow('التعليم الزراعي'); toggleMenu();"><i class="fas fa-tractor"></i> التعليم الزراعي</a></li>
             <li><a href="#" onclick="startFlow('التمريض (فني)'); toggleMenu();"><i class="fas fa-heartbeat"></i> التمريض (فني)</a></li>
-            <li><a href="#about" onclick="toggleMenu();"><i class="fas fa-info-circle"></i> من نحن</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
         </ul>
     </nav>
 
     <header>
-        <div class="logo-area" onclick="resetToHome()">
-            <i class="fas fa-layer-group logo-icon"></i>
+        <a href="index.html" class="logo-area">
+            <img src="images/logo.png" alt="شعار منهاجي" class="custom-logo">
             <div class="logo-text">
                 <h1>Manhaaji</h1>
                 <p>طريقك لفهم المنهج وإتقان العلم</p>
             </div>
-        </div>
+        </a>
         <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
     </header>
 
     <section class="hero" id="hero-section">
-        <h2>مرحباً بك في منصة منهجي</h2>
+        <h2>مرحباً بك في منصة منهاجي</h2>
         <p>المنصة التعليمية الأذكى لمراجعة المناهج والتدريب على الامتحانات التفاعلية</p>
     </section>
 
     <div class="container">
-        
         <div id="home-grid">
             <h2 class="section-title">الأقسام الدراسية</h2>
-            <div class="grid">
+            <div class="grid" id="mainGrid">
                 <div class="card" onclick="startFlow('الابتدائية')"><i class="fas fa-child"></i><h3>الابتدائية</h3><p>شرح وتدريبات لجميع الصفوف الابتدائية</p></div>
                 <div class="card" onclick="startFlow('الإعدادية')"><i class="fas fa-book"></i><h3>الإعدادية</h3><p>تأسيس قوي لمرحلة التعليم الإعدادي</p></div>
                 <div class="card" onclick="startFlow('الثانوية العامة')"><i class="fas fa-graduation-cap"></i><h3>الثانوية العامة</h3><p>مراجعات نهائية وتدريبات بنظام التقييم الحديث</p></div>
@@ -187,11 +165,12 @@
 
             <h2 class="section-title" id="about">من نحن</h2>
             <div class="about-section">
-                <img src="https://via.placeholder.com/200/0056b3/ffffff?text=Mazen+Khaled" alt="مازن خالد" class="about-image">
+                <img src="images/profile.jpg" alt="مازن خالد" class="about-image">
                 <div class="about-text">
-                    <h3>مازن خالد</h3>
-                    <h4>مؤسس المنصة | مصمم جرافيك ومونتير</h4>
-                    <p>منصة "منهجي" هي نتاج دمج الشغف بالتعليم مع الاحترافية في التصميم وتجربة المستخدم. نهدف إلى تقديم مادة علمية معقدة بطريقة بصرية مريحة، منظمة، وتفاعلية. تصميم المنصة يعكس فلسفة البساطة والوضوح لمساعدة الطلاب في جميع المراحل على استيعاب المعلومات وإتقانها بأحدث تقنيات الويب.</p>
+                    <h3>مازن خالد شعبان</h3>
+                    <h4>المؤسس والمدير التنفيذي لمنصة منهاجي</h4>
+                    <p>نسخر فنون التصميم وقوة التكنولوجيا لابتكار تجارب تعليمية بصرية تفاعلية لا تُنسى. نهدف إلى تقديم مادة علمية معقدة بطريقة بصرية مريحة، منظمة، وتفاعلية.</p>
+                    <a href="about.html" class="btn-more">عرض المزيد <i class="fas fa-arrow-left"></i></a>
                 </div>
             </div>
         </div>
@@ -201,42 +180,33 @@
                 <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> رجوع للخطوة السابقة</button>
                 <h3 class="flow-title" id="flow-title">جاري التحميل...</h3>
             </div>
-            <div class="flow-grid" id="flow-content">
-                </div>
+            <div class="flow-grid" id="flow-content"></div>
         </div>
-
     </div>
 
     <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 منصة منهجي (Manahaji.com) | تصميم وتطوير مازن خالد</p>
+        <p>جميع الحقوق محفوظة &copy; 2026 منصة منهاجي (Manhaaji.com) | تصميم وتطوير مازن خالد</p>
     </footer>
 
-    <script>
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
+    <div class="modal-overlay-app" id="installAppModal">
+        <div class="modal-box-app">
+            <img src="images/logo.png" alt="شعار منهاجي" class="modal-logo">
+            <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 1.6rem;">ثبّت تطبيق منهاجي</h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">أضف المنصة إلى شاشتك الرئيسية للوصول السريع وتجربة استخدام أفضل بدون متصفح!</p>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-action-app btn-install" onclick="installApp()">تثبيت الآن <i class="fas fa-download"></i></button>
+                <button class="btn-action-app btn-skip" onclick="closeInstallModal()">تخطي <i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
 
-        // ==========================================
-        // SPA Logic (نظام التصفح الداخلي الذكي)
-        // ==========================================
+    <script>
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         
         let pathHistory = []; 
+        const homeGrid = document.getElementById('home-grid'); const heroSection = document.getElementById('hero-section'); const dynamicFlow = document.getElementById('dynamic-flow'); const flowContent = document.getElementById('flow-content'); const flowTitle = document.getElementById('flow-title'); const loader = document.getElementById('loader');
 
-        const homeGrid = document.getElementById('home-grid');
-        const heroSection = document.getElementById('hero-section');
-        const dynamicFlow = document.getElementById('dynamic-flow');
-        const flowContent = document.getElementById('flow-content');
-        const flowTitle = document.getElementById('flow-title');
-        const loader = document.getElementById('loader');
-
-        function simulateLoading(callback) {
-            loader.style.display = 'flex';
-            setTimeout(() => {
-                loader.style.display = 'none';
-                callback();
-            }, 600); 
-        }
+        function simulateLoading(callback) { loader.style.display = 'flex'; setTimeout(() => { loader.style.display = 'none'; callback(); }, 600); }
 
         function updateBreadcrumb() {
             if(pathHistory.length === 0) return;
@@ -244,192 +214,140 @@
             flowTitle.innerHTML = breadcrumb;
         }
 
-        function resetToHome() {
-            simulateLoading(() => {
-                pathHistory = [];
-                dynamicFlow.style.display = 'none';
-                homeGrid.style.display = 'block';
-                heroSection.style.display = 'block';
-            });
-        }
+        function resetToHome() { simulateLoading(() => { pathHistory = []; dynamicFlow.style.display = 'none'; homeGrid.style.display = 'block'; heroSection.style.display = 'block'; }); }
 
         function goBack() {
-            if (pathHistory.length <= 1) {
-                resetToHome();
-                return;
-            }
+            if (pathHistory.length <= 1) { resetToHome(); return; }
             simulateLoading(() => {
                 pathHistory.pop(); 
-                const previousStep = pathHistory[pathHistory.length - 1];
-                
-                if (previousStep.step === 'department') renderClasses();
-                else if (previousStep.step === 'class') renderTerms();
-                else if (previousStep.step === 'term') renderSubjects();
-                else if (previousStep.step === 'subject') renderActions();
+                const prev = pathHistory[pathHistory.length - 1];
+                if (prev.step === 'department') renderClasses();
+                else if (prev.step === 'class') renderTerms();
+                else if (prev.step === 'term') renderSubjects();
+                else if (prev.step === 'subject') renderActions();
             });
         }
 
-        function startFlow(departmentName) {
-            simulateLoading(() => {
-                pathHistory = [{ step: 'department', value: departmentName }];
-                homeGrid.style.display = 'none';
-                heroSection.style.display = 'none';
-                dynamicFlow.style.display = 'block';
-                renderClasses();
-            });
-        }
+        function startFlow(departmentName) { simulateLoading(() => { pathHistory = [{ step: 'department', value: departmentName }]; homeGrid.style.display = 'none'; heroSection.style.display = 'none'; dynamicFlow.style.display = 'block'; renderClasses(); }); }
 
         function renderClasses() {
             updateBreadcrumb();
-            flowContent.innerHTML = `
-                <button class="option-btn" onclick="selectClass('الصف الأول')"><i class="fas fa-sort-numeric-up-alt"></i> الصف الأول</button>
-                <button class="option-btn" onclick="selectClass('الصف الثاني')"><i class="fas fa-sort-numeric-up"></i> الصف الثاني</button>
-                <button class="option-btn" onclick="selectClass('الصف الثالث')"><i class="fas fa-sort-amount-up"></i> الصف الثالث</button>
-            `;
+            flowContent.innerHTML = `<button class="option-btn" onclick="selectClass('الصف الأول')"><i class="fas fa-sort-numeric-up-alt"></i> الصف الأول</button><button class="option-btn" onclick="selectClass('الصف الثاني')"><i class="fas fa-sort-numeric-up"></i> الصف الثاني</button><button class="option-btn" onclick="selectClass('الصف الثالث')"><i class="fas fa-sort-amount-up"></i> الصف الثالث</button>`;
         }
 
-        function selectClass(className) {
-            simulateLoading(() => {
-                if(pathHistory.length > 1) pathHistory = [pathHistory[0]]; 
-                pathHistory.push({ step: 'class', value: className });
-                renderTerms();
-            });
-        }
+        function selectClass(className) { simulateLoading(() => { if(pathHistory.length > 1) pathHistory = [pathHistory[0]]; pathHistory.push({ step: 'class', value: className }); renderTerms(); }); }
 
         function renderTerms() {
             updateBreadcrumb();
-            flowContent.innerHTML = `
-                <button class="option-btn" onclick="selectTerm('الترم الأول')"><i class="fas fa-calendar-alt"></i> الترم الأول</button>
-                <button class="option-btn" onclick="selectTerm('الترم الثاني')"><i class="fas fa-calendar-check"></i> الترم الثاني</button>
-            `;
+            flowContent.innerHTML = `<button class="option-btn" onclick="selectTerm('الترم الأول')"><i class="fas fa-calendar-alt"></i> الترم الأول</button><button class="option-btn" onclick="selectTerm('الترم الثاني')"><i class="fas fa-calendar-check"></i> الترم الثاني</button>`;
         }
 
-        function selectTerm(termName) {
-            simulateLoading(() => {
-                if(pathHistory.length > 2) pathHistory = pathHistory.slice(0,2);
-                pathHistory.push({ step: 'term', value: termName });
-                renderSubjects();
-            });
-        }
+        function selectTerm(termName) { simulateLoading(() => { if(pathHistory.length > 2) pathHistory = pathHistory.slice(0,2); pathHistory.push({ step: 'term', value: termName }); renderSubjects(); }); }
 
         function renderSubjects() {
             updateBreadcrumb();
-            const dept = pathHistory[0].value;
-            const cls = pathHistory[1].value;
-            const term = pathHistory[2].value;
+            const dept = pathHistory[0].value; const cls = pathHistory[1].value; const term = pathHistory[2].value;
 
             if (dept === 'التمريض (فني)' && cls === 'الصف الثاني' && term === 'الترم الثاني') {
-                flowContent.innerHTML = `
-                    <button class="option-btn" onclick="selectSubject('تمريض الباطنة والجراحة')"><i class="fas fa-heartbeat"></i> تمريض الباطنة والجراحة</button>
-                `;
-            } 
-            // التعديل هنا: خلينا السطر يقرأ (الترم الأول) أو (الترم الثاني)
-            else if (dept === 'الابتدائية' && cls === 'الصف الأول' && (term === 'الترم الأول' || term === 'الترم الثاني')) {
-                flowContent.innerHTML = `
-                    <button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-language"></i> اللغة العربية</button>
-                    <button class="option-btn" onclick="selectSubject('الرياضيات')"><i class="fas fa-subscript"></i> الرياضيات</button>
-                    <button class="option-btn" onclick="selectSubject('اللغة الإنجليزية')"><i class="fas fa-font"></i> اللغة الإنجليزية</button>
-                `;
-            } 
-            else {
-                flowContent.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                        <i class="fas fa-tools" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
-                        <h3 style="color: var(--text-muted);">جاري تجهيز وإضافة المواد لهذا القسم قريباً...</h3>
-                    </div>
-                `;
+                flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('تمريض الباطنة والجراحة')"><i class="fas fa-heartbeat"></i> تمريض الباطنة والجراحة</button>`;
+            } else if (dept === 'الابتدائية' && cls === 'الصف الأول') {
+                flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-language"></i> اللغة العربية</button><button class="option-btn" onclick="selectSubject('الرياضيات')"><i class="fas fa-subscript"></i> الرياضيات</button><button class="option-btn" onclick="selectSubject('اللغة الإنجليزية')"><i class="fas fa-font"></i> اللغة الإنجليزية</button>`;
+            } else {
+                flowContent.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px;"><i class="fas fa-tools" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i><h3 style="color: var(--text-muted);">جاري تجهيز وإضافة المواد لهذا القسم قريباً...</h3></div>`;
             }
         }
 
-        function selectSubject(subjectName) {
-            simulateLoading(() => {
-                if(pathHistory.length > 3) pathHistory = pathHistory.slice(0,3);
-                pathHistory.push({ step: 'subject', value: subjectName });
-                renderActions();
-            });
-        }
+        function selectSubject(subjectName) { simulateLoading(() => { if(pathHistory.length > 3) pathHistory = pathHistory.slice(0,3); pathHistory.push({ step: 'subject', value: subjectName }); renderActions(); }); }
 
-                function renderActions() {
+        function renderActions() {
             updateBreadcrumb();
-            flowContent.innerHTML = `
-                <button class="option-btn" onclick="selectAction('شرح المنهج')"><i class="fas fa-chalkboard-teacher"></i> شرح المنهج</button>
-                <button class="option-btn" onclick="selectAction('المراجعات والتلاخيص')"><i class="fas fa-book-open"></i> المراجعات والتلاخيص</button>
-                <button class="option-btn" onclick="selectAction('الامتحان الذكي')"><i class="fas fa-laptop-code"></i> بنك الأسئلة والامتحانات</button>
-            `;
+            flowContent.innerHTML = `<button class="option-btn" onclick="selectAction('شرح المنهج')"><i class="fas fa-chalkboard-teacher"></i> شرح المنهج</button><button class="option-btn" onclick="selectAction('المراجعات والتلاخيص')"><i class="fas fa-book-open"></i> المراجعات والتلاخيص</button><button class="option-btn" onclick="selectAction('الامتحان الذكي')"><i class="fas fa-laptop-code"></i> بنك الأسئلة والامتحانات</button>`;
         }
 
-
-                function selectAction(actionName) {
+        function selectAction(actionName) {
             simulateLoading(() => {
                 if(pathHistory.length > 4) pathHistory = pathHistory.slice(0,4);
                 pathHistory.push({ step: 'action', value: actionName });
-
-                const subject = pathHistory[3].value;
-                const action = pathHistory[4].value;
-                const term = pathHistory[2].value;
+                const subject = pathHistory[3].value; const action = pathHistory[4].value; const term = pathHistory[2].value;
 
                 if (subject === 'اللغة العربية') {
                     const termCode = term === 'الترم الثاني' ? 't2' : 't1';
-                    if (action === 'شرح المنهج') {
-                        renderArabicUnits(`arabic_g1_${termCode}`);
-                    } 
-                    else if (action === 'المراجعات والتلاخيص') {
-                        renderArabicUnits(`arabic_g1_${termCode}_revision`, true);
-                    }
-                    else if (action === 'الامتحان الذكي') {
-                        window.location.href = `exam.html?subject=arabic_g1_${termCode}_revision`;
-                    }
-                } 
-                else if (subject === 'تمريض الباطنة والجراحة') {
-                    if (action === 'المراجعات والتلاخيص') {
-                        renderNursingChapters();
-                    } 
-                    else if (action === 'الامتحان الذكي') {
-                        // يوجه للامتحان ويسحب من ملف داتا التمريض
-                        window.location.href = `exam.html?subject=nursing_g2_t2`;
-                    } 
-                    else {
-                        alert('شرح المنهج لهذا القسم قيد التجهيز...');
-                    }
-                } 
-                else {
-                    alert('هذا القسم قيد التجهيز حالياً...');
-                }
+                    if (action === 'شرح المنهج') { renderArabicUnits(`arabic_g1_${termCode}`); } 
+                    else if (action === 'المراجعات والتلاخيص') { renderArabicUnits(`arabic_g1_${termCode}_revision`, true); }
+                    else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=arabic_g1_${termCode}_revision`; }
+                } else if (subject === 'تمريض الباطنة والجراحة') {
+                    if (action === 'المراجعات والتلاخيص') { renderNursingChapters(); } 
+                    else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=nursing_g2_t2`; } 
+                    else { alert('شرح المنهج لهذا القسم قيد التجهيز...'); }
+                } else { alert('هذا القسم قيد التجهيز حالياً...'); }
             });
         }
 
-
-        // دالة عرض الوحدات (ذكية تقبل الترم الأول والثاني والشرح والمراجعة)
         function renderArabicUnits(subjectCode, isRevision = false) {
             updateBreadcrumb();
-            const targetPage = isRevision ? 'revision.html' : 'lesson.html';
-            const param = isRevision ? 'ch' : 'unit'; // المراجعة بتاخد ch والشرح بياخد unit
-            
-            // بما إن الترم التاني 3 وحدات والأول 4، هنخليهم 4 زراير عامة
-            flowContent.innerHTML = `
-                <button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=1'"><i class="fas fa-home" style="color:var(--primary);"></i> الوحدة الأولى</button>
-                <button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=2'"><i class="fas fa-paw" style="color:var(--primary);"></i> الوحدة الثانية</button>
-                <button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=3'"><i class="fas fa-child" style="color:var(--primary);"></i> الوحدة الثالثة</button>
-                <button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=4'"><i class="fas fa-school" style="color:var(--primary);"></i> الوحدة الرابعة</button>
-            `;
+            const targetPage = isRevision ? 'revision.html' : 'lesson.html'; const param = isRevision ? 'ch' : 'unit'; 
+            flowContent.innerHTML = `<button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=1'"><i class="fas fa-home" style="color:var(--primary);"></i> الوحدة الأولى</button><button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=2'"><i class="fas fa-paw" style="color:var(--primary);"></i> الوحدة الثانية</button><button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=3'"><i class="fas fa-child" style="color:var(--primary);"></i> الوحدة الثالثة</button><button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=4'"><i class="fas fa-school" style="color:var(--primary);"></i> الوحدة الرابعة</button>`;
         }
 
-
-        // توجيه فصول التمريض لملف المراجعات الذكي
         function renderNursingChapters() {
             updateBreadcrumb();
             let chaptersHtml = ``;
-            for(let i=1; i<=11; i++) {
-                chaptersHtml += `<button class="option-btn" style="font-size: 1.1rem; padding: 15px;" onclick="window.location.href='revision.html?subject=nursing_g2_t2&ch=${i}'">الفصل ${i}</button>`;
-            }
+            for(let i=1; i<=11; i++) { chaptersHtml += `<button class="option-btn" style="font-size: 1.1rem; padding: 15px;" onclick="window.location.href='revision.html?subject=nursing_g2_t2&ch=${i}'">الفصل ${i}</button>`; }
             flowContent.innerHTML = chaptersHtml;
         }
 
+        // ==========================================
+        // برمجة تطبيق الموبايل PWA والشاشة المنبثقة
+        // ==========================================
+        let deferredPrompt;
 
-        function goToChapter(chapterNum) {
-            simulateLoading(() => {
-                window.location.href = `nursing-revision.html?ch=${chapterNum}`;
+        // تسجيل الـ Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('PWA Service Worker Registered');
+                }).catch(err => {
+                    console.log('PWA Registration failed: ', err);
+                });
             });
+        }
+
+        // اصطياد حدث التثبيت
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // منع ظهور رسالة المتصفح الافتراضية
+            e.preventDefault();
+            // حفظ الحدث لاستخدامه لما يدوس على الزرار بتاعنا
+            deferredPrompt = e;
+            
+            // التأكد إننا مش بنزعجه لو داس "تخطي" قبل كده
+            if(!localStorage.getItem('pwaPromptSkipped')) {
+                // إظهار رسالتنا الاحترافية بعد ثانيتين من فتح الموقع
+                setTimeout(() => {
+                    document.getElementById('installAppModal').classList.add('active');
+                }, 2000);
+            }
+        });
+
+        // زرار التخطي
+        function closeInstallModal() {
+            document.getElementById('installAppModal').classList.remove('active');
+            // حفظ في الذاكرة عشان متظهرش تاني (ممكن تغيرها لو عايزها تظهر كل مرة)
+            localStorage.setItem('pwaPromptSkipped', 'true'); 
+        }
+
+        // زرار التثبيت
+        function installApp() {
+            document.getElementById('installAppModal').classList.remove('active');
+            if (deferredPrompt) {
+                // إظهار رسالة التثبيت الحقيقية بتاعت الموبايل
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('الطالب قام بتثبيت التطبيق');
+                    }
+                    deferredPrompt = null;
+                });
+            }
         }
     </script>
 </body>
