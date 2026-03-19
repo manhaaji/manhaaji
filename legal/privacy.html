@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسة الخصوصية | منصة منهجي</title>
+    
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0056b3; --secondary: #00a8cc; --accent: #ff6b6b;
+            --dark: #2c3e50; --light: #f4f7f6; --white: #ffffff;
+            --text-muted: #7f8c8d; --gradient: linear-gradient(135deg, #0056b3, #00a8cc);
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--light); color: var(--dark); line-height: 1.8; }
+        
+        /* الهيدر */
+        header { background: var(--white); padding: 15px 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .custom-logo { width: 45px; height: 45px; object-fit: contain; }
+        .logo-text h1 { font-family: 'Poppins', sans-serif; font-size: 1.6rem; color: var(--primary); margin: 0;}
+        .header-btn { background: var(--light); color: var(--primary); border: 1px solid var(--secondary); padding: 8px 20px; border-radius: 25px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Cairo'; text-decoration: none; display: flex; align-items: center; gap: 8px;}
+        .header-btn:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); }
+
+        /* منطقة الهيرو */
+        .page-hero { background: var(--gradient); padding: 60px 20px; text-align: center; color: var(--white); margin-bottom: 40px; border-radius: 0 0 40px 40px; }
+        .page-hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        .page-hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+
+        /* المحتوى */
+        .container { max-width: 900px; margin: -50px auto 50px; padding: 0 20px; position: relative; z-index: 10; }
+        .content-card { background: var(--white); padding: 40px 50px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); animation: fadeIn 0.6s ease; }
+        
+        .update-date { background: #eef2f5; color: var(--text-muted); display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 30px; }
+        
+        .section-block { margin-bottom: 35px; border-bottom: 1px solid #eee; padding-bottom: 25px; }
+        .section-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .section-block h2 { color: var(--primary); font-size: 1.5rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .section-block h2 i { color: var(--secondary); font-size: 1.3rem; }
+        .section-block p { font-size: 1.05rem; color: #555; margin-bottom: 15px; text-align: justify; }
+        .section-block ul { list-style: none; padding-right: 15px; margin-bottom: 15px; }
+        .section-block ul li { position: relative; margin-bottom: 10px; font-size: 1.05rem; color: #555; padding-right: 20px; }
+        .section-block ul li::before { content: '■'; color: var(--accent); position: absolute; right: 0; font-size: 0.8rem; top: 6px; }
+
+        footer { background: #1a1a1a; color: var(--white); text-align: center; padding: 20px; font-size: 0.95rem; border-top: 3px solid var(--primary); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .content-card { padding: 30px 20px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="logo-area">
+            <img src="../images/logo.png" alt="شعار منهجي" class="custom-logo">
+            <div class="logo-text"><h1>Manhaaji</h1></div>
+        </a>
+        <a href="../index.html" class="header-btn"><i class="fas fa-home"></i> الرئيسية</a>
+    </header>
+
+    <section class="page-hero">
+        <h1>سياسة الخصوصية</h1>
+        <p>نلتزم بحماية بياناتك وتقديم تجربة تعليمية آمنة وموثوقة</p>
+    </section>
+
+    <div class="container">
+        <div class="content-card">
+            <div class="update-date"><i class="fas fa-history"></i> آخر تحديث: مارس 2026</div>
+            
+            <div class="section-block">
+                <h2><i class="fas fa-shield-alt"></i> 1. مقدمة</h2>
+                <p>مرحباً بك في منصة <strong>"منهجي" (Manhaaji)</strong>. نحن نعتبر خصوصية زوارنا وطلابنا من أهم أولوياتنا. توضح وثيقة سياسة الخصوصية هذه بالتفصيل أنواع المعلومات الشخصية التي نقوم بجمعها وتسجيلها وكيفية استخدامنا لها لتوفير أفضل تجربة تعليمية ممكنة.</p>
+            </div>
+
+            <div class="section-block">
+                <h2><i class="fas fa-database"></i> 2. المعلومات التي نجمعها</h2>
+                <p>أثناء استخدامك لمنصتنا، قد نقوم بجمع بعض المعلومات القياسية التي تساعدنا في تحسين خدماتنا، وتشمل:</p>
+                <ul>
+                    <li><strong>المعلومات المباشرة:</strong> مثل الاسم الثلاثي الذي تدخله طواعية لإصدار شهادات التفوق في الامتحانات.</li>
+                    <li><strong>معلومات الاستخدام (Log Files):</strong> تشمل عناوين بروتوكول الإنترنت (IP)، نوع المتصفح، مزود خدمة الإنترنت (ISP)، طوابع التاريخ/الوقت، والصفحات التي قمت بزيارتها. هذه البيانات تُستخدم فقط للتحليل الإحصائي وإدارة المنصة ولا ترتبط بأي معلومات شخصية تحدد هويتك.</li>
+                    <li><strong>بيانات التقييم:</strong> الإجابات ونتائج الامتحانات التي تقوم بها لحساب تقييمك وعرض النتائج الفورية.</li>
+                </ul>
+            </div>
+
+            <div class="section-block">
+                <h2><i class="fas fa-cookie-bite"></i> 3. ملفات تعريف الارتباط (Cookies)</h2>
+                <p>تستخدم منصة منهجي ملفات تعريف الارتباط (Cookies) وتقنيات التخزين المحلي (Local Storage & Session Storage) لغرض وحيد وهو تحسين تجربة المستخدم. نستخدمها في:</p>
+                <ul>
+                    <li>حفظ تقدمك في الامتحانات حتى لا تفقد إجاباتك إذا انقطع الاتصال.</li>
+                    <li>تذكر تفضيلاتك (مثل تفعيل الوضع الليلي أو إخفاء النوافذ المنبثقة للتطبيقات).</li>
+                    <li>تخصيص محتوى صفحة الويب استناداً إلى نوع المتصفح الذي تستخدمه.</li>
+                </ul>
+            </div>
+
+            <div class="section-block">
+                <h2><i class="fas fa-ad"></i> 4. شركاء الإعلانات (Google AdSense)</h2>
+                <p>قد نستعين بشركات إعلان لأطراف ثالثة مثل <strong>Google</strong> لعرض الإعلانات عندما تزور منصتنا. تستخدم هذه الشركات ملفات تعريف الارتباط (مثل ملف تعريف الارتباط DART) لعرض إعلانات تستند إلى زياراتك السابقة لموقعنا والمواقع الأخرى على الإنترنت.</p>
+                <p>يمكن للمستخدمين اختيار عدم استخدام ملف تعريف الارتباط DART لغرض عرض الإعلانات المخصصة عن طريق زيارة <a href="https://policies.google.com/technologies/ads" target="_blank" style="color: var(--secondary);">سياسة خصوصية إعلانات Google</a>.</p>
+            </div>
+
+            <div class="section-block">
+                <h2><i class="fas fa-user-lock"></i> 5. حماية أمان البيانات</h2>
+                <p>نحن نتخذ الإجراءات الأمنية المناسبة لحماية بياناتك من الوصول غير المصرح به أو التعديل أو الإفصاح. لا نقوم مطلقاً ببيع أو تأجير أو تبادل معلوماتك الشخصية (مثل اسمك المدخل في الشهادات) مع أي طرف ثالث لأغراض تسويقية.</p>
+            </div>
+
+            <div class="section-block">
+                <h2><i class="fas fa-check-circle"></i> 6. موافقتك</h2>
+                <p>باستخدامك لمنصة "منهجي"، فإنك توافق رسمياً على سياسة الخصوصية الخاصة بنا وتوافق على شروطها. إذا كنت بحاجة إلى أي مزيد من المعلومات أو لديك أي أسئلة حول سياسة الخصوصية الخاصة بنا، فلا تتردد في الاتصال بنا عبر قنوات التواصل المتاحة في صفحة "من نحن".</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 منصة منهجي (Manhaaji.com) | تصميم وتطوير مازن خالد</p>
+    </footer>
+
+</body>
+</html>
