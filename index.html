@@ -47,7 +47,12 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--light); color: var(--dark); overflow-x: hidden; }
 
-        /* ------------------ Header & Sidebar ------------------ */
+        /* شريط التمرير الاحترافي */
+        ::-webkit-scrollbar { width: 10px; } 
+        ::-webkit-scrollbar-track { background: #eef2f5; border-radius: 5px; } 
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; border: 2px solid #eef2f5; } 
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); } 
+
         header { background: var(--white); padding: 15px 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none;}
         .custom-logo { width: 85px; height: 85px; object-fit: contain; margin-left: 5px;}
@@ -56,20 +61,35 @@
 
         .menu-toggle { font-size: 1.8rem; color: var(--primary); background: transparent; border: none; cursor: pointer; }
 
-        .sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background-color: var(--white); box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s ease; z-index: 2000; display: flex; flex-direction: column; }
+        .sidebar { position: fixed; top: 0; right: -300px; width: 300px; height: 100vh; background-color: var(--white); box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s ease; z-index: 2000; display: flex; flex-direction: column; }
         .sidebar.active { right: 0; }
         .sidebar-header { padding: 30px 20px; background: var(--gradient); color: #fff; text-align: center; position: relative; }
         .close-btn { position: absolute; top: 15px; left: 15px; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-        .sidebar-menu { list-style: none; padding: 20px 0; flex: 1; overflow-y: auto; }
-        .sidebar-menu li { padding: 15px 25px; border-bottom: 1px solid rgba(127, 140, 141, 0.1); transition: 0.3s; }
-        .sidebar-menu li:hover { background-color: rgba(0, 86, 179, 0.05); padding-right: 35px; }
-        .sidebar-menu a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; }
-        .sidebar-menu i { color: var(--secondary); font-size: 1.2rem; width: 25px; }
+        
+        .sidebar-menu { list-style: none; padding: 20px 0; flex: 1; overflow-y: auto; overflow-x: hidden; }
+        .sidebar-menu::-webkit-scrollbar { width: 6px; }
+
+        .sidebar-menu > li { padding: 0; border-bottom: 1px solid rgba(127, 140, 141, 0.1); transition: 0.3s; }
+        .sidebar-menu > li > a { padding: 15px 25px; text-decoration: none; color: var(--dark); font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; transition: 0.3s; }
+        .sidebar-menu > li > a:hover { background-color: rgba(0, 86, 179, 0.05); padding-right: 35px; color: var(--primary); }
+        .sidebar-menu i { color: var(--secondary); font-size: 1.2rem; width: 25px; text-align: center; }
+
+        /* 🌟 القوائم المنسدلة في القائمة الجانبية 🌟 */
+        .sidebar-dropdown-btn { width: 100%; text-align: right; background: none; border: none; font-family: 'Cairo', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--dark); padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s; }
+        .sidebar-dropdown-btn:hover { background-color: rgba(0, 86, 179, 0.05); padding-right: 35px; color: var(--primary); }
+        .sidebar-dropdown-btn i.arrow-icon { font-size: 0.9rem; transition: transform 0.3s ease; color: var(--text-muted); width: auto; }
+        .sidebar-dropdown-btn.active { color: var(--primary); background-color: rgba(0, 86, 179, 0.03); }
+        .sidebar-dropdown-btn.active i.arrow-icon { transform: rotate(180deg); color: var(--primary); }
+        
+        .sidebar-submenu { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #fafbfc; list-style: none; }
+        .sidebar-submenu li { border-bottom: none; }
+        .sidebar-submenu a { padding: 12px 25px 12px 40px; font-size: 1.05rem; color: #555; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: 0.3s; border-right: 3px solid transparent; }
+        .sidebar-submenu a:hover { background: rgba(0, 168, 204, 0.08); color: var(--primary); padding-right: 35px; border-color: var(--secondary); }
+        .sidebar-submenu i.fa-angle-left { font-size: 0.8rem; color: var(--secondary); }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1500; display: none; opacity: 0; transition: 0.4s; }
         .overlay.active { display: block; opacity: 1; }
 
-        /* ------------------ Hero Section ------------------ */
         .hero { background: var(--gradient); color: #fff; text-align: center; padding: 60px 20px; border-radius: 0 0 50px 50px; margin-bottom: 40px; }
         .hero h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; }
         .hero p { font-size: 1.2rem; opacity: 0.9; }
@@ -79,7 +99,6 @@
         .section-title { text-align: center; font-size: 2rem; color: var(--dark); margin-bottom: 40px; position: relative; }
         .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--accent); border-radius: 2px; }
 
-        /* ------------------ Grid & Cards ------------------ */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 60px; }
         .card { background: var(--white); border-radius: 15px; padding: 30px 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; border-bottom: 5px solid var(--secondary); cursor: pointer; display: block; text-decoration: none; color: inherit; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--primary); }
@@ -88,7 +107,6 @@
         .card h3 { font-size: 1.4rem; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* ------------------ Dynamic Flow (SPA) ------------------ */
         #dynamic-flow { display: none; animation: fadeIn 0.5s ease; }
         .flow-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--white); padding: 15px 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .flow-title { font-size: 1.3rem; color: var(--primary); font-weight: 700; margin: 0;}
@@ -100,7 +118,6 @@
         .option-btn i { display: block; font-size: 2.5rem; margin-bottom: 10px; }
         .option-btn:hover { background: var(--secondary); color: #fff; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 168, 204, 0.3); }
 
-        /* ------------------ About Us Section ------------------ */
         .about-section { background: var(--white); border-radius: 20px; padding: 40px; display: flex; align-items: center; gap: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 60px; }
         .about-image { width: 180px; height: 180px; border-radius: 50%; border: 5px solid var(--light); box-shadow: 0 5px 15px rgba(0,0,0,0.1); object-fit: cover; }
         .about-text h3 { font-size: 2rem; color: var(--primary); margin-bottom: 5px; }
@@ -109,61 +126,20 @@
         .btn-more { display: inline-flex; align-items: center; gap: 8px; padding: 10px 25px; background: var(--gradient); color: #fff; text-decoration: none; border-radius: 25px; font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 86, 179, 0.2); }
         .btn-more:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 86, 179, 0.4); color: #fff;}
 
-        /* 🌟 Skeleton Loading: تصميم الهيكل العظمي مع اللوجو والدائرة 🌟 */
-        #loader { 
-            display: none; 
-            position: fixed; 
-            top: 115px; 
-            left: 0; 
-            width: 100%; 
-            height: calc(100vh - 115px); 
-            background: var(--light); 
-            z-index: 900; 
-            padding: 40px 20px 20px; 
-            overflow: hidden; 
-        }
+        /* Skeleton Loading */
+        #loader { display: none; position: fixed; top: 115px; left: 0; width: 100%; height: calc(100vh - 115px); background: var(--light); z-index: 900; padding: 40px 20px 20px; overflow: hidden; }
         .skeleton-container { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; }
         .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; opacity: 0.6; }
         .skeleton-card { height: 190px; border-radius: 15px; }
         
-        .skeleton-anim {
-            background: #e2e5e7;
-            background-image: linear-gradient(90deg, #e2e5e7 0px, #f4f7f6 40px, #e2e5e7 80px);
-            background-size: 600px;
-            animation: shine-lines 1.6s infinite linear;
-        }
-
-        .loader-central {
-            position: absolute;
-            top: 40vh; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 901;
-        }
-        .loader-logo-static {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-            position: absolute;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
-        }
-        .loader-spinner-ring {
-            width: 120px; 
-            height: 120px;
-            border: 4px solid rgba(0, 86, 179, 0.1); 
-            border-top: 4px solid var(--primary); 
-            border-bottom: 4px solid var(--secondary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+        .skeleton-anim { background: #e2e5e7; background-image: linear-gradient(90deg, #e2e5e7 0px, #f4f7f6 40px, #e2e5e7 80px); background-size: 600px; animation: shine-lines 1.6s infinite linear; }
+        .loader-central { position: absolute; top: 40vh; left: 50%; transform: translate(-50%, -50%); display: flex; justify-content: center; align-items: center; z-index: 901; }
+        .loader-logo-static { width: 90px; height: 90px; object-fit: contain; position: absolute; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+        .loader-spinner-ring { width: 120px; height: 120px; border: 4px solid rgba(0, 86, 179, 0.1); border-top: 4px solid var(--primary); border-bottom: 4px solid var(--secondary); border-radius: 50%; animation: spin 1s linear infinite; }
 
         @keyframes shine-lines { 0% { background-position: -100px; } 100% { background-position: 500px; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* ------------------ Modal للتطبيق ------------------ */
         .modal-overlay-app { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 5000; display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
         .modal-overlay-app.active { display: flex; opacity: 1; }
         .modal-box-app { background: var(--white); padding: 35px 25px; border-radius: 20px; text-align: center; max-width: 90%; width: 400px; transform: scale(0.8); transition: 0.3s; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
@@ -176,22 +152,17 @@
         .btn-skip { background: #eee; color: var(--dark); }
         .btn-skip:hover { background: #ddd; }
 
-        /* ------------------ FAQ Section ------------------ */
         .faq-section { margin-bottom: 60px; }
         .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
         .faq-item { background: var(--white); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid rgba(0, 86, 179, 0.1); transition: 0.3s; }
         .faq-item:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); border-color: var(--secondary); }
-        
         .faq-question { width: 100%; text-align: right; padding: 20px 25px; background: transparent; border: none; font-family: 'Cairo', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
         .faq-question i { color: var(--secondary); font-size: 1.2rem; transition: transform 0.4s ease; }
-        
         .faq-item.active .faq-question { color: var(--primary); }
         .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--primary); }
-        
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #fafbfc; }
         .faq-answer-content { padding: 0 25px 20px; font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); border-top: 1px dashed rgba(0,0,0,0.05); margin-top: 10px; padding-top: 15px; }
 
-        /* ------------------ Scroll to Top Button ------------------ */
         .scroll-top-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: var(--gradient); color: var(--white); border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3); opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 9999; display: flex; justify-content: center; align-items: center; }
         .scroll-top-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .scroll-top-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 10px 25px rgba(0, 86, 179, 0.5); background: linear-gradient(135deg, var(--secondary), var(--primary)); }
@@ -246,19 +217,64 @@
             <h2>منهجي</h2>
             <p>اختر مسارك التعليمي</p>
         </div>
+        
         <ul class="sidebar-menu">
-            <li><a href="#" onclick="startFlow('الابتدائية'); toggleMenu();"><i class="fas fa-child"></i> المرحلة الابتدائية</a></li>
-            <li><a href="#" onclick="startFlow('الإعدادية'); toggleMenu();"><i class="fas fa-book"></i> المرحلة الإعدادية</a></li>
-            <li><a href="#" onclick="startFlow('الثانوية العامة'); toggleMenu();"><i class="fas fa-graduation-cap"></i> الثانوية العامة</a></li>
-            <li><a href="#" onclick="startFlow('التعليم الصناعي'); toggleMenu();"><i class="fas fa-tools"></i> التعليم الصناعي</a></li>
-            <li><a href="#" onclick="startFlow('التعليم التجاري'); toggleMenu();"><i class="fas fa-calculator"></i> التعليم التجاري</a></li>
-            <li><a href="#" onclick="startFlow('التعليم الزراعي'); toggleMenu();"><i class="fas fa-tractor"></i> التعليم الزراعي</a></li>
-            <li><a href="#" onclick="startFlow('التمريض (فني)'); toggleMenu();"><i class="fas fa-heartbeat"></i> التمريض (فني)</a></li>
+            
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-child"></i> 
+                        <span>المرحلة الابتدائية</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="jumpToClass('الابتدائية', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('الابتدائية', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('الابتدائية', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
+                    <li><a href="#" onclick="jumpToClass('الابتدائية', 'الصف الرابع'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الرابع</a></li>
+                    <li><a href="#" onclick="jumpToClass('الابتدائية', 'الصف الخامس'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الخامس</a></li>
+                    <li><a href="#" onclick="jumpToClass('الابتدائية', 'الصف السادس'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف السادس</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-book"></i> 
+                        <span>المرحلة الإعدادية</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="jumpToClass('الإعدادية', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('الإعدادية', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('الإعدادية', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
+                </ul>
+            </li>
+            
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-graduation-cap"></i> 
+                        <span>المرحلة الثانوية والفني</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="startFlow('الثانوية العامة'); toggleMenu();"><i class="fas fa-angle-left"></i> الثانوية العامة</a></li>
+                    <li><a href="#" onclick="startFlow('التعليم الصناعي'); toggleMenu();"><i class="fas fa-angle-left"></i> التعليم الصناعي</a></li>
+                    <li><a href="#" onclick="startFlow('التعليم التجاري'); toggleMenu();"><i class="fas fa-angle-left"></i> التعليم التجاري</a></li>
+                    <li><a href="#" onclick="startFlow('التعليم الزراعي'); toggleMenu();"><i class="fas fa-angle-left"></i> التعليم الزراعي</a></li>
+                    <li><a href="#" onclick="startFlow('التمريض (فني)'); toggleMenu();"><i class="fas fa-angle-left"></i> التمريض (فني)</a></li>
+                </ul>
+            </li>
+
             <li><a href="legal/privacy.html"><i class="fas fa-user-shield"></i> سياسة الخصوصية</a></li>
             <li><a href="legal/terms.html"><i class="fas fa-file-signature"></i> شروط الاستخدام</a></li>
+            <li><a href="pages/contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
         </ul>
-                    <li><a href="pages/contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
     </nav>
 
     <section class="hero" id="hero-section">
@@ -284,35 +300,19 @@
                 <div class="faq-container">
                     <div class="faq-item">
                         <button class="faq-question">هل استخدام منصة منهجي مجاني؟ <i class="fas fa-chevron-down"></i></button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-content">
-                                نعم، نسعى في منصة منهجي لتقديم تجربة تعليمية متكاملة لجميع الطلاب. الشروحات الأساسية والامتحانات التفاعلية متاحة مجاناً لمساعدتك على التفوق.
-                            </div>
-                        </div>
+                        <div class="faq-answer"><div class="faq-answer-content">نعم، نسعى في منصة منهجي لتقديم تجربة تعليمية متكاملة لجميع الطلاب. الشروحات الأساسية والامتحانات التفاعلية متاحة مجاناً لمساعدتك على التفوق.</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question">كيف يمكنني أداء الامتحانات التفاعلية؟ <i class="fas fa-chevron-down"></i></button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-content">
-                                الأمر بسيط جداً! قم باختيار مرحلتك الدراسية من الصفحة الرئيسية، ثم اختر المادة، واضغط على "الامتحان الذكي". سيقوم النظام بتوليد أسئلة تفاعلية وتقييمك فور الانتهاء.
-                            </div>
-                        </div>
+                        <div class="faq-answer"><div class="faq-answer-content">الأمر بسيط جداً! قم باختيار مرحلتك الدراسية من الصفحة الرئيسية، ثم اختر المادة، واضغط على "الامتحان الذكي". سيقوم النظام بتوليد أسئلة تفاعلية وتقييمك فور الانتهاء.</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question">هل يمكنني تصفح المنصة من الهاتف؟ <i class="fas fa-chevron-down"></i></button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-content">
-                                بالتأكيد! منصة منهجي مصممة لتكون متوافقة 100% مع جميع الأجهزة المحمولة والأجهزة اللوحية، ويمكنك أيضاً تثبيتها كتطبيق (PWA) على هاتفك لسهولة الوصول.
-                            </div>
-                        </div>
+                        <div class="faq-answer"><div class="faq-answer-content">بالتأكيد! منصة منهجي مصممة لتكون متوافقة 100% مع جميع الأجهزة المحمولة والأجهزة اللوحية، ويمكنك أيضاً تثبيتها كتطبيق (PWA) على هاتفك لسهولة الوصول.</div></div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question">كيف أحصل على شهادة التقدير؟ <i class="fas fa-chevron-down"></i></button>
-                        <div class="faq-answer">
-                            <div class="faq-answer-content">
-                                عند اجتيازك للامتحان الذكي وحصولك على درجة مرتفعة، سيقوم النظام تلقائياً بعرض خيار لإدخال اسمك واستخراج شهادة تفوق إلكترونية يمكنك تحميلها ومشاركتها مع أصدقائك.
-                            </div>
-                        </div>
+                        <div class="faq-answer"><div class="faq-answer-content">عند اجتيازك للامتحان الذكي وحصولك على درجة مرتفعة، سيقوم النظام تلقائياً بعرض خيار لإدخال اسمك واستخراج شهادة تفوق إلكترونية يمكنك تحميلها ومشاركتها مع أصدقائك.</div></div>
                     </div>
                 </div>
             </div>
@@ -365,14 +365,22 @@
     <script>
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         
+        /* حركة فتح وقفل الأقسام في القائمة الجانبية */
+        function toggleSidebarSubmenu(btn) {
+            btn.classList.toggle('active');
+            const submenu = btn.nextElementSibling;
+            if (btn.classList.contains('active')) {
+                submenu.style.maxHeight = submenu.scrollHeight + "px";
+            } else {
+                submenu.style.maxHeight = 0;
+            }
+        }
+
         let pathHistory = []; 
         const homeGrid = document.getElementById('home-grid'); const heroSection = document.getElementById('hero-section'); const dynamicFlow = document.getElementById('dynamic-flow'); const flowContent = document.getElementById('flow-content'); const flowTitle = document.getElementById('flow-title'); const loader = document.getElementById('loader');
 
-        /* 🌟 التصليح اللي رجع كل حاجة تشتغل زي الأول 🌟 */
         function simulateLoading(callback) { 
-            // الـ loader هيغطي الشاشة كلها لوحده
             loader.style.display = 'block'; 
-            
             setTimeout(() => { 
                 loader.style.display = 'none'; 
                 callback(); 
@@ -401,9 +409,40 @@
 
         function startFlow(departmentName) { simulateLoading(() => { pathHistory = [{ step: 'department', value: departmentName }]; homeGrid.style.display = 'none'; heroSection.style.display = 'none'; dynamicFlow.style.display = 'block'; renderClasses(); }); }
 
+        /* 🌟 دالة "القفز المباشر" لما يختار صف من القائمة الجانبية 🌟 */
+        function jumpToClass(departmentName, className) {
+            simulateLoading(() => {
+                pathHistory = [
+                    { step: 'department', value: departmentName },
+                    { step: 'class', value: className }
+                ];
+                homeGrid.style.display = 'none';
+                heroSection.style.display = 'none';
+                dynamicFlow.style.display = 'block';
+                renderTerms(); // بيوديه على اختيار الترم علطول
+            });
+        }
+
+        /* 🌟 تحديث فصول الابتدائي لإضافة 4، 5، 6 🌟 */
         function renderClasses() {
             updateBreadcrumb();
-            flowContent.innerHTML = `<button class="option-btn" onclick="selectClass('الصف الأول')"><i class="fas fa-sort-numeric-up-alt"></i> الصف الأول</button><button class="option-btn" onclick="selectClass('الصف الثاني')"><i class="fas fa-sort-numeric-up"></i> الصف الثاني</button><button class="option-btn" onclick="selectClass('الصف الثالث')"><i class="fas fa-sort-amount-up"></i> الصف الثالث</button>`;
+            const dept = pathHistory[0].value;
+            if (dept === 'الابتدائية') {
+                flowContent.innerHTML = `
+                    <button class="option-btn" onclick="selectClass('الصف الأول')"><i class="fas fa-sort-numeric-up-alt"></i> الصف الأول</button>
+                    <button class="option-btn" onclick="selectClass('الصف الثاني')"><i class="fas fa-sort-numeric-up"></i> الصف الثاني</button>
+                    <button class="option-btn" onclick="selectClass('الصف الثالث')"><i class="fas fa-sort-amount-up"></i> الصف الثالث</button>
+                    <button class="option-btn" onclick="selectClass('الصف الرابع')"><i class="fas fa-sort-numeric-up-alt"></i> الصف الرابع</button>
+                    <button class="option-btn" onclick="selectClass('الصف الخامس')"><i class="fas fa-sort-numeric-up"></i> الصف الخامس</button>
+                    <button class="option-btn" onclick="selectClass('الصف السادس')"><i class="fas fa-sort-amount-up"></i> الصف السادس</button>
+                `;
+            } else {
+                flowContent.innerHTML = `
+                    <button class="option-btn" onclick="selectClass('الصف الأول')"><i class="fas fa-sort-numeric-up-alt"></i> الصف الأول</button>
+                    <button class="option-btn" onclick="selectClass('الصف الثاني')"><i class="fas fa-sort-numeric-up"></i> الصف الثاني</button>
+                    <button class="option-btn" onclick="selectClass('الصف الثالث')"><i class="fas fa-sort-amount-up"></i> الصف الثالث</button>
+                `;
+            }
         }
 
         function selectClass(className) { simulateLoading(() => { if(pathHistory.length > 1) pathHistory = [pathHistory[0]]; pathHistory.push({ step: 'class', value: className }); renderTerms(); }); }
@@ -467,7 +506,6 @@
             flowContent.innerHTML = chaptersHtml;
         }
 
-        // ==========================================
         let deferredPrompt;
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -493,7 +531,6 @@
             }
         }
 
-        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const faqQuestions = document.querySelectorAll('.faq-question');
             faqQuestions.forEach(question => {
@@ -515,7 +552,6 @@
             });
         });
 
-        // ==========================================
         const scrollTopBtn = document.getElementById("scrollTopBtn");
         window.addEventListener("scroll", () => {
             if (window.pageYOffset > 400) {
