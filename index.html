@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX1VNZBF18"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NX1VNZBF18');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NX1VNZBF18"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NX1VNZBF18');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منهجي | طريقك لفهم المنهج وإتقان العلم</title>
     <meta name="description" content="منصة منهجي (Manhaaji) التعليمية الأذكى لمراجعة المناهج والتدريب على الامتحانات التفاعلية لجميع المراحل الدراسية والتعليم الفني.">
     <meta name="keywords" content="منهجي, منصة تعليمية, امتحانات تفاعلية, مراجعات, ثانوية عامة, إعدادية, ابتدائية, تمريض, تعليم فني, Manhaaji">
     <meta name="author" content="Mazen Khaled">
+    
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0056b3">
@@ -114,14 +114,7 @@
         .btn-skip { background: #eee; color: var(--dark); }
         .btn-skip:hover { background: #ddd; }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 768px) { .about-section { flex-direction: column; text-align: center; } .flow-header { flex-direction: column; gap: 15px; text-align: center; } }
-
-        footer { background: #1a1a1a; color: #fff; text-align: center; padding: 20px; font-size: 1rem; border-top: 2px solid var(--primary); }
-        
-                /* ------------------ FAQ Section ------------------ */
+        /* ------------------ FAQ Section ------------------ */
         .faq-section { margin-bottom: 60px; }
         .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
         .faq-item { background: var(--white); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid rgba(0, 86, 179, 0.1); transition: 0.3s; }
@@ -139,9 +132,49 @@
         /* ------------------ Scroll to Top Button ------------------ */
         .scroll-top-btn {
             position: fixed;
-            /* ... (باقي كود التصميم اللي بعتهولك) ... */
+            bottom: 30px;
+            left: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
+        .scroll-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 86, 179, 0.5);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) { 
+            .about-section { flex-direction: column; text-align: center; } 
+            .flow-header { flex-direction: column; gap: 15px; text-align: center; } 
+            .scroll-top-btn { bottom: 20px; left: 20px; width: 45px; height: 45px; font-size: 1.2rem; }
+        }
+
+        footer { background: #1a1a1a; color: #fff; text-align: center; padding: 20px; font-size: 1rem; border-top: 2px solid var(--primary); }
     </style>
 </head>
 <body>
@@ -163,7 +196,7 @@
             <li><a href="#" onclick="startFlow('التعليم التجاري'); toggleMenu();"><i class="fas fa-calculator"></i> التعليم التجاري</a></li>
             <li><a href="#" onclick="startFlow('التعليم الزراعي'); toggleMenu();"><i class="fas fa-tractor"></i> التعليم الزراعي</a></li>
             <li><a href="#" onclick="startFlow('التمريض (فني)'); toggleMenu();"><i class="fas fa-heartbeat"></i> التمريض (فني)</a></li>
-                        <li><a href="legal/privacy.html"><i class="fas fa-user-shield"></i> سياسة الخصوصية</a></li>
+            <li><a href="legal/privacy.html"><i class="fas fa-user-shield"></i> سياسة الخصوصية</a></li>
             <li><a href="legal/terms.html"><i class="fas fa-file-signature"></i> شروط الاستخدام</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
         </ul>
@@ -197,10 +230,10 @@
                 <div class="card" onclick="startFlow('التعليم الزراعي')"><i class="fas fa-tractor"></i><h3>التعليم الزراعي</h3><p>شرح وتدريبات الدبلوم الزراعي</p></div>
                 <div class="card" onclick="startFlow('التمريض (فني)')" style="border-color: var(--accent);"><i class="fas fa-heartbeat" style="color: var(--accent);"></i><h3>التمريض (فني)</h3><p>شرح ومراجعات وتدريبات الباطنة والجراحة</p></div>
             </div>
+            
             <div class="faq-section">
                 <h2 class="section-title">الأسئلة الشائعة</h2>
                 <div class="faq-container">
-                    
                     <div class="faq-item">
                         <button class="faq-question">هل استخدام منصة منهجي مجاني؟ <i class="fas fa-chevron-down"></i></button>
                         <div class="faq-answer">
@@ -209,7 +242,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="faq-item">
                         <button class="faq-question">كيف يمكنني أداء الامتحانات التفاعلية؟ <i class="fas fa-chevron-down"></i></button>
                         <div class="faq-answer">
@@ -218,7 +250,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="faq-item">
                         <button class="faq-question">هل يمكنني تصفح المنصة من الهاتف؟ <i class="fas fa-chevron-down"></i></button>
                         <div class="faq-answer">
@@ -227,7 +258,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="faq-item">
                         <button class="faq-question">كيف أحصل على شهادة التقدير؟ <i class="fas fa-chevron-down"></i></button>
                         <div class="faq-answer">
@@ -236,7 +266,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -261,18 +290,17 @@
         </div>
     </div>
 
-       <footer style="background: #1a1a1a; color: #fff; text-align: center; padding: 25px 20px; border-top: 2px solid var(--primary);">
+    <footer style="background: #1a1a1a; color: #fff; text-align: center; padding: 25px 20px; border-top: 2px solid var(--primary);">
         <div style="margin-bottom: 15px;">
             <a href="legal/privacy.html" style="color: var(--secondary); text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1rem;">سياسة الخصوصية</a> | 
             <a href="legal/terms.html" style="color: var(--secondary); text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1rem;">شروط الاستخدام</a>
         </div>
         <p style="margin: 0; font-size: 0.95rem; opacity: 0.8;">جميع الحقوق محفوظة &copy; 2026 منصة منهجي (Manhaaji.com) | تصميم وتطوير مازن خالد</p>
+    </footer>
+
     <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTop()" title="العودة للأعلى">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-    </footer>
-
 
     <div class="modal-overlay-app" id="installAppModal">
         <div class="modal-box-app">
@@ -386,8 +414,6 @@
         // برمجة تطبيق الموبايل PWA والشاشة المنبثقة
         // ==========================================
         let deferredPrompt;
-
-        // تسجيل الـ Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(reg => {
@@ -397,61 +423,40 @@
                 });
             });
         }
-
-        // اصطياد حدث التثبيت
         window.addEventListener('beforeinstallprompt', (e) => {
-            // منع ظهور رسالة المتصفح الافتراضية
             e.preventDefault();
-            // حفظ الحدث لاستخدامه لما يدوس على الزرار بتاعنا
             deferredPrompt = e;
-            
-            // التأكد إننا مش بنزعجه لو داس "تخطي" قبل كده
             if(!localStorage.getItem('pwaPromptSkipped')) {
-                // إظهار رسالتنا الاحترافية بعد ثانيتين من فتح الموقع
-                setTimeout(() => {
-                    document.getElementById('installAppModal').classList.add('active');
-                }, 2000);
+                setTimeout(() => { document.getElementById('installAppModal').classList.add('active'); }, 2000);
             }
         });
-
-        // زرار التخطي
         function closeInstallModal() {
             document.getElementById('installAppModal').classList.remove('active');
-            // حفظ في الذاكرة عشان متظهرش تاني (ممكن تغيرها لو عايزها تظهر كل مرة)
             localStorage.setItem('pwaPromptSkipped', 'true'); 
         }
-
-        // زرار التثبيت
         function installApp() {
             document.getElementById('installAppModal').classList.remove('active');
             if (deferredPrompt) {
-                // إظهار رسالة التثبيت الحقيقية بتاعت الموبايل
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('الطالب قام بتثبيت التطبيق');
-                    }
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; });
             }
         }
-                // ------------------ برمجة الأسئلة الشائعة (FAQ) ------------------
+
+        // ==========================================
+        // ------------------ برمجة الأسئلة الشائعة (FAQ) ------------------
         document.addEventListener('DOMContentLoaded', () => {
             const faqQuestions = document.querySelectorAll('.faq-question');
-            
             faqQuestions.forEach(question => {
                 question.addEventListener('click', () => {
                     const item = question.parentElement;
                     const answer = item.querySelector('.faq-answer');
                     const isActive = item.classList.contains('active');
                     
-                    // قفل كل الأسئلة المفتوحة الأول (عشان يبقى شكلها أرتب)
                     document.querySelectorAll('.faq-item').forEach(faqItem => {
                         faqItem.classList.remove('active');
                         faqItem.querySelector('.faq-answer').style.maxHeight = null;
                     });
                     
-                    // لو السؤال اللي دسنا عليه مكنش مفتوح، افتحه
                     if (!isActive) {
                         item.classList.add('active');
                         answer.style.maxHeight = answer.scrollHeight + "px";
@@ -459,11 +464,23 @@
                 });
             });
         });
+
+        // ==========================================
         // ------------------ برمجة زر الصعود للأعلى ------------------
         const scrollTopBtn = document.getElementById("scrollTopBtn");
-
         window.addEventListener("scroll", () => {
-            /* ... (باقي كود البرمجة اللي بعتهولك) ... */
+            if (window.pageYOffset > 400) {
+                scrollTopBtn.classList.add("show");
+            } else {
+                scrollTopBtn.classList.remove("show");
+            }
+        });
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         }
-    </script> </body>
+    </script> 
+</body>
 </html>
