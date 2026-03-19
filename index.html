@@ -257,16 +257,74 @@
                 <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <i class="fas fa-graduation-cap"></i> 
-                        <span>المرحلة الثانوية والفني</span>
+                        <span>الثانوية العامة</span>
                     </div>
                     <i class="fas fa-chevron-down arrow-icon"></i>
                 </button>
                 <ul class="sidebar-submenu">
-                    <li><a href="#" onclick="startFlow('الثانوية العامة'); toggleMenu();"><i class="fas fa-angle-left"></i> الثانوية العامة</a></li>
-                    <li><a href="#" onclick="startFlow('التعليم الصناعي'); toggleMenu();"><i class="fas fa-angle-left"></i> التعليم الصناعي</a></li>
-                    <li><a href="#" onclick="startFlow('التعليم التجاري'); toggleMenu();"><i class="fas fa-angle-left"></i> التعليم التجاري</a></li>
-                    <li><a href="#" onclick="startFlow('التعليم الزراعي'); toggleMenu();"><i class="fas fa-angle-left"></i> التعليم الزراعي</a></li>
-                    <li><a href="#" onclick="startFlow('التمريض (فني)'); toggleMenu();"><i class="fas fa-angle-left"></i> التمريض (فني)</a></li>
+                    <li><a href="#" onclick="jumpToClass('الثانوية العامة', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('الثانوية العامة', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('الثانوية العامة', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-tools"></i> 
+                        <span>التعليم الصناعي</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="jumpToClass('التعليم الصناعي', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('التعليم الصناعي', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('التعليم الصناعي', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-calculator"></i> 
+                        <span>التعليم التجاري</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="jumpToClass('التعليم التجاري', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('التعليم التجاري', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('التعليم التجاري', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-tractor"></i> 
+                        <span>التعليم الزراعي</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="jumpToClass('التعليم الزراعي', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('التعليم الزراعي', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('التعليم الزراعي', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarSubmenu(this)">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-heartbeat"></i> 
+                        <span>التمريض (فني)</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-icon"></i>
+                </button>
+                <ul class="sidebar-submenu">
+                    <li><a href="#" onclick="jumpToClass('التمريض (فني)', 'الصف الأول'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الأول</a></li>
+                    <li><a href="#" onclick="jumpToClass('التمريض (فني)', 'الصف الثاني'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثاني</a></li>
+                    <li><a href="#" onclick="jumpToClass('التمريض (فني)', 'الصف الثالث'); toggleMenu();"><i class="fas fa-angle-left"></i> الصف الثالث</a></li>
                 </ul>
             </li>
 
@@ -409,7 +467,6 @@
 
         function startFlow(departmentName) { simulateLoading(() => { pathHistory = [{ step: 'department', value: departmentName }]; homeGrid.style.display = 'none'; heroSection.style.display = 'none'; dynamicFlow.style.display = 'block'; renderClasses(); }); }
 
-        /* 🌟 دالة "القفز المباشر" لما يختار صف من القائمة الجانبية 🌟 */
         function jumpToClass(departmentName, className) {
             simulateLoading(() => {
                 pathHistory = [
@@ -419,11 +476,10 @@
                 homeGrid.style.display = 'none';
                 heroSection.style.display = 'none';
                 dynamicFlow.style.display = 'block';
-                renderTerms(); // بيوديه على اختيار الترم علطول
+                renderTerms(); 
             });
         }
 
-        /* 🌟 تحديث فصول الابتدائي لإضافة 4، 5، 6 🌟 */
         function renderClasses() {
             updateBreadcrumb();
             const dept = pathHistory[0].value;
