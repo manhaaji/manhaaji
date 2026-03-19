@@ -120,6 +120,28 @@
         @media (max-width: 768px) { .about-section { flex-direction: column; text-align: center; } .flow-header { flex-direction: column; gap: 15px; text-align: center; } }
 
         footer { background: #1a1a1a; color: #fff; text-align: center; padding: 20px; font-size: 1rem; border-top: 2px solid var(--primary); }
+        
+                /* ------------------ FAQ Section ------------------ */
+        .faq-section { margin-bottom: 60px; }
+        .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
+        .faq-item { background: var(--white); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid rgba(0, 86, 179, 0.1); transition: 0.3s; }
+        .faq-item:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); border-color: var(--secondary); }
+        
+        .faq-question { width: 100%; text-align: right; padding: 20px 25px; background: transparent; border: none; font-family: 'Cairo', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .faq-question i { color: var(--secondary); font-size: 1.2rem; transition: transform 0.4s ease; }
+        
+        .faq-item.active .faq-question { color: var(--primary); }
+        .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--primary); }
+        
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: #fafbfc; }
+        .faq-answer-content { padding: 0 25px 20px; font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); border-top: 1px dashed rgba(0,0,0,0.05); margin-top: 10px; padding-top: 15px; }
+
+        /* ------------------ Scroll to Top Button ------------------ */
+        .scroll-top-btn {
+            position: fixed;
+            /* ... (باقي كود التصميم اللي بعتهولك) ... */
+        }
+
     </style>
 </head>
 <body>
@@ -175,6 +197,48 @@
                 <div class="card" onclick="startFlow('التعليم الزراعي')"><i class="fas fa-tractor"></i><h3>التعليم الزراعي</h3><p>شرح وتدريبات الدبلوم الزراعي</p></div>
                 <div class="card" onclick="startFlow('التمريض (فني)')" style="border-color: var(--accent);"><i class="fas fa-heartbeat" style="color: var(--accent);"></i><h3>التمريض (فني)</h3><p>شرح ومراجعات وتدريبات الباطنة والجراحة</p></div>
             </div>
+            <div class="faq-section">
+                <h2 class="section-title">الأسئلة الشائعة</h2>
+                <div class="faq-container">
+                    
+                    <div class="faq-item">
+                        <button class="faq-question">هل استخدام منصة منهجي مجاني؟ <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                نعم، نسعى في منصة منهجي لتقديم تجربة تعليمية متكاملة لجميع الطلاب. الشروحات الأساسية والامتحانات التفاعلية متاحة مجاناً لمساعدتك على التفوق.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">كيف يمكنني أداء الامتحانات التفاعلية؟ <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                الأمر بسيط جداً! قم باختيار مرحلتك الدراسية من الصفحة الرئيسية، ثم اختر المادة، واضغط على "الامتحان الذكي". سيقوم النظام بتوليد أسئلة تفاعلية وتقييمك فور الانتهاء.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">هل يمكنني تصفح المنصة من الهاتف؟ <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                بالتأكيد! منصة منهجي مصممة لتكون متوافقة 100% مع جميع الأجهزة المحمولة والأجهزة اللوحية، ويمكنك أيضاً تثبيتها كتطبيق (PWA) على هاتفك لسهولة الوصول.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">كيف أحصل على شهادة التقدير؟ <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                عند اجتيازك للامتحان الذكي وحصولك على درجة مرتفعة، سيقوم النظام تلقائياً بعرض خيار لإدخال اسمك واستخراج شهادة تفوق إلكترونية يمكنك تحميلها ومشاركتها مع أصدقائك.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <h2 class="section-title" id="about">من نحن</h2>
             <div class="about-section">
@@ -203,6 +267,10 @@
             <a href="legal/terms.html" style="color: var(--secondary); text-decoration: none; margin: 0 15px; font-weight: 600; font-size: 1rem;">شروط الاستخدام</a>
         </div>
         <p style="margin: 0; font-size: 0.95rem; opacity: 0.8;">جميع الحقوق محفوظة &copy; 2026 منصة منهجي (Manhaaji.com) | تصميم وتطوير مازن خالد</p>
+    <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTop()" title="العودة للأعلى">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     </footer>
 
 
@@ -367,6 +435,35 @@
                 });
             }
         }
-    </script>
-</body>
+                // ------------------ برمجة الأسئلة الشائعة (FAQ) ------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    const answer = item.querySelector('.faq-answer');
+                    const isActive = item.classList.contains('active');
+                    
+                    // قفل كل الأسئلة المفتوحة الأول (عشان يبقى شكلها أرتب)
+                    document.querySelectorAll('.faq-item').forEach(faqItem => {
+                        faqItem.classList.remove('active');
+                        faqItem.querySelector('.faq-answer').style.maxHeight = null;
+                    });
+                    
+                    // لو السؤال اللي دسنا عليه مكنش مفتوح، افتحه
+                    if (!isActive) {
+                        item.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+        // ------------------ برمجة زر الصعود للأعلى ------------------
+        const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+        window.addEventListener("scroll", () => {
+            /* ... (باقي كود البرمجة اللي بعتهولك) ... */
+        }
+    </script> </body>
 </html>
