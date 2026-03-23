@@ -782,11 +782,12 @@
                     appendMessage("عذراً، حدث خطأ في الاتصال بالسيرفر. حاول مرة أخرى.", 'ai-message');
                 }
 
-            } catch (error) {
-                if(document.getElementById(typingId)) document.getElementById(typingId).remove();
-                appendMessage("عذراً، أنا أواجه مشكلة في الشبكة حالياً. تأكد من اتصالك بالإنترنت.", 'ai-message');
-                console.error(error);
-            }
+                    } catch (error) {
+            if(document.getElementById(typingId)) document.getElementById(typingId).remove();
+            // السطر ده هيطبعلك الخطأ التقني بالظبط على الشاشة
+            appendMessage("الخطأ التقني هو: " + error.message, 'ai-message');
+        }
+
         }
 
         function appendMessage(text, className) {
