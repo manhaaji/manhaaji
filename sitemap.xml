@@ -8,4 +8,28 @@
     <loc>https://manhaaji.com/about.html</loc>
     <priority>0.80</priority>
   </url>
+  <url>
+    <loc>https://manhaaji.com/exam.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/lesson.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/revision.html</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/pages/contact.html</loc>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/legal/privacy.html</loc>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/legal/terms.html</loc>
+    <priority>0.50</priority>
+  </url>
 </urlset>
