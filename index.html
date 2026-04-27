@@ -591,6 +591,8 @@
                 flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('تمريض الباطنة والجراحة')"><i class="fas fa-heartbeat"></i> تمريض الباطنة والجراحة</button>`;
             } else if (dept === 'الابتدائية' && cls === 'الصف الأول') {
                 flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-language"></i> اللغة العربية</button><button class="option-btn" onclick="selectSubject('الرياضيات')"><i class="fas fa-subscript"></i> الرياضيات</button><button class="option-btn" onclick="selectSubject('اللغة الإنجليزية')"><i class="fas fa-font"></i> اللغة الإنجليزية</button>`;
+            } else if (dept === 'الابتدائية' && cls === 'الصف الثاني') {
+                flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-book"></i> اللغة العربية</button>`;
             } else {
                 flowContent.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px;"><i class="fas fa-tools" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i><h3 style="color: var(--text-muted);">جاري تجهيز وإضافة المواد لهذا القسم قريباً...</h3></div>`;
             }
@@ -610,10 +612,17 @@
                 const subject = pathHistory[3].value; const action = pathHistory[4].value; const term = pathHistory[2].value;
 
                 if (subject === 'اللغة العربية') {
+                    const cls = pathHistory[1].value;
                     const termCode = term === 'الترم الثاني' ? 't2' : 't1';
-                    if (action === 'شرح المنهج') { renderArabicUnits(`arabic_g1_${termCode}`); } 
-                    else if (action === 'المراجعات والتلاخيص') { renderArabicUnits(`arabic_g1_${termCode}_revision`, true); }
-                    else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=arabic_g1_${termCode}_revision`; }
+                    let fileCode;
+                    if (cls === 'الصف الأول') {
+                        fileCode = 'arabic_g1_' + termCode;
+                    } else if (cls === 'الصف الثاني') {
+                        fileCode = 'primary/g2/pri_g2_' + termCode + '_arabic';
+                    }
+                    if (action === 'شرح المنهج') { renderArabicUnits(fileCode); } 
+                    else if (action === 'المراجعات والتلاخيص') { renderArabicUnits(fileCode + '_revision', true); }
+                    else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=${fileCode}_revision`; }
                 } else if (subject === 'تمريض الباطنة والجراحة') {
                     if (action === 'المراجعات والتلاخيص') { renderNursingChapters(); } 
                     else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=nursing_g2_t2`; } 
