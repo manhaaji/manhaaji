@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -90,6 +90,26 @@
         
         #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 5000; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { width: 60px; height: 60px; border: 6px solid var(--light); border-top: 6px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        
+        /* Interactive Exam Matching UI */
+        .match-exam-wrapper { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); margin-bottom: 25px; }
+        .match-container { position: relative; display: flex; justify-content: space-between; gap: 50px; margin: 20px 0; min-height: 200px; user-select: none; }
+        .match-svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .match-col { display: flex; flex-direction: column; gap: 15px; width: 45%; z-index: 2; }
+        .match-box { border: 2px solid #e0e0e0; padding: 10px 15px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.95rem; background: #fff; z-index: 2; position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); min-height: 50px; cursor: pointer; }
+        .match-badge { background: #eef5fc; color: var(--primary); min-width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 900; font-size: 0.9rem; flex-shrink: 0; transition: 0.3s; }
+
+        /* Interactive States */
+        .match-box:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .match-box.active-pulse { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.2); animation: pulse 1.5s infinite; }
+        .match-box.error-shake { border-color: #ff4d4d !important; animation: shake 0.4s; background: rgba(255, 77, 77, 0.1) !important; }
+
+        .match-line { stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawMatchLine 1.5s forwards ease-in-out; }
+        @keyframes drawMatchLine { to { stroke-dashoffset: 0; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
+
+        @media (max-width: 900px) { .match-container { gap: 20px; } .match-col { width: 48%; } .match-box { flex-direction: column; text-align: center; gap: 5px; padding: 8px; font-size: 0.85rem;} .match-badge { margin: 0 auto; } }
     </style>
 </head>
 <body>
@@ -213,6 +233,120 @@
     </div>
 
     <script>
+        // Global Matching State Manager
+        window.examMatchingState = {};
+
+        window.handleMatchClick = function(box) {
+            const container = box.closest('.match-container');
+            const qid = container.id;
+            const isRight = box.classList.contains('right-item'); // Letters (Questions)
+            const itemId = box.dataset.id;
+
+            if (!window.examMatchingState[qid]) {
+                window.examMatchingState[qid] = { links: {}, activeRight: null, colors: ['#0056b3', '#00a8cc', '#28a745', '#6610f2', '#ff9800', '#e91e63'] };
+            }
+            const state = window.examMatchingState[qid];
+
+            if (isRight) {
+                // If clicking a right item that is already linked -> UNLINK IT
+                if (state.links[itemId]) {
+                    delete state.links[itemId];
+                    state.activeRight = null;
+                    redrawExamLines(container, state);
+                    return;
+                }
+                
+                // Deselect previous active if any
+                if (state.activeRight) {
+                    container.querySelector(`.right-item[data-id="${state.activeRight}"]`).classList.remove('active-pulse');
+                }
+                
+                // Select new
+                if (state.activeRight !== itemId) {
+                    state.activeRight = itemId;
+                    box.classList.add('active-pulse');
+                } else {
+                    state.activeRight = null; // toggle off
+                }
+            } else {
+                // Clicking a left item (Numbers/Answers)
+                if (!state.activeRight) return; // Must select a right item first
+
+                // Check if this left item is already linked to another right item
+                const alreadyLinkedTo = Object.keys(state.links).find(key => state.links[key] === itemId);
+                if (alreadyLinkedTo) {
+                    // ERROR: Show red shake
+                    box.classList.add('error-shake');
+                    setTimeout(() => box.classList.remove('error-shake'), 400);
+                    return;
+                }
+
+                // Create Link!
+                state.links[state.activeRight] = itemId;
+                container.querySelector(`.right-item[data-id="${state.activeRight}"]`).classList.remove('active-pulse');
+                state.activeRight = null;
+                
+                redrawExamLines(container, state);
+            }
+        };
+
+        window.redrawExamLines = function(container, state) {
+            const svg = container.querySelector('.match-svg-layer');
+            svg.innerHTML = '';
+            const cRect = container.getBoundingClientRect();
+            
+            // Reset all boxes to default style
+            container.querySelectorAll('.match-box').forEach(b => {
+                b.style.borderColor = ''; b.style.backgroundColor = '';
+                const badge = b.querySelector('.match-badge');
+                badge.style.backgroundColor = ''; badge.style.color = '';
+            });
+
+            let colorIdx = 0;
+            const hiddenInput = document.getElementById('input_' + container.id);
+            hiddenInput.value = JSON.stringify(state.links); // Update hidden input for grading
+
+            for (const [rightId, leftId] of Object.entries(state.links)) {
+                const boxR = container.querySelector(`.right-item[data-id="${rightId}"]`);
+                const boxL = container.querySelector(`.left-item[data-id="${leftId}"]`);
+                
+                if (boxR && boxL) {
+                    const color = state.colors[colorIdx % state.colors.length];
+                    
+                    // Apply colors
+                    [boxR, boxL].forEach(b => {
+                        b.style.borderColor = color; 
+                        b.style.backgroundColor = color + '1a';
+                        const badge = b.querySelector('.match-badge');
+                        badge.style.backgroundColor = color; 
+                        badge.style.color = '#fff';
+                    });
+
+                    // Draw Line
+                    const rectR = boxR.getBoundingClientRect();
+                    const rectL = boxL.getBoundingClientRect();
+                    const isRLeft = rectR.left < rectL.left;
+                    
+                    const pLeftBox = isRLeft ? rectR : rectL;
+                    const pRightBox = isRLeft ? rectL : rectR;
+
+                    const x1 = pLeftBox.right - cRect.left; 
+                    const y1 = pLeftBox.top + (pLeftBox.height / 2) - cRect.top;
+                    const x2 = pRightBox.left - cRect.left; 
+                    const y2 = pRightBox.top + (pRightBox.height / 2) - cRect.top;
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+                    line.setAttribute('stroke', color);
+                    line.classList.add('match-line');
+                    svg.appendChild(line);
+                    
+                    colorIdx++;
+                }
+            }
+        };
+
         let examBank = [];
         let selectedQuestions = [];
         let currentSubjectKey = "";
@@ -263,14 +397,32 @@
                     // استخراج الأسئلة مع حفظ رقم الوحدة
                     dataObj.chapters.forEach((ch, index) => {
                         if(ch) {
-                            for (let key in ch) {
+                            Object.keys(ch).forEach(key => {
                                 if (Array.isArray(ch[key])) {
                                     ch[key].forEach(q => {
-                                        let type = (key === 'tf') ? 'tf' : (key === 'mcq' ? 'mcq' : 'text');
-                                        examBank.push({...q, type: type, chapterIndex: index});
+                                        // Force type assignment if not explicitly present
+                                        if (key.includes('match') || key === 'matching') {
+                                            q.type = 'matching';
+                                            examBank.push({...q, type: 'matching', chapterIndex: index});
+                                        } 
+                                        // Also ensure other types are pushed correctly
+                                        else if (key === 'mcq' || key.includes('mcq')) {
+                                            q.type = 'mcq';
+                                            examBank.push({...q, type: 'mcq', chapterIndex: index});
+                                        } else if (key === 'tf' || key.includes('tf')) {
+                                            q.type = 'tf';
+                                            examBank.push({...q, type: 'tf', chapterIndex: index});
+                                        } else if (key === 'text' || key.includes('text') || key === 'complete') {
+                                            q.type = 'text';
+                                            examBank.push({...q, type: 'text', chapterIndex: index});
+                                        } else {
+                                            // For any other dynamic types added by CMS V10
+                                            if(!q.type) q.type = key;
+                                            examBank.push({...q, type: q.type || key, chapterIndex: index});
+                                        }
                                     });
                                 }
-                            }
+                            });
                         }
                     });
 
@@ -381,6 +533,45 @@
                         inputHtml += `<label class="option-lbl"><input type="radio" name="q_${index}" value="${cleanOpt}" ${savedAnswer===cleanOpt?'checked':''} onchange="saveAnswer(${index}, this.value)"> ${cleanOpt}</label>`;
                     });
                     inputHtml += `</div>`;
+                } else if (q.type === 'matching') {
+                    // Utility function to shuffle array (place outside the loop if needed)
+                    const shuffleArray = array => [...array].sort(() => Math.random() - 0.5);
+
+                    const isEnglish = /[a-zA-Z]/.test(q.q_ar || q.q_eng || "");
+                    const dir = isEnglish ? 'ltr' : 'rtl';
+                    const uniqueId = 'exam_match_' + index;
+
+                    // Shuffle columns to ensure randomized layout
+                    const shuffledColA = shuffleArray(q.colA || []);
+                    const shuffledColB = shuffleArray(q.colB || []);
+
+                    let colA_HTML = '';
+                    shuffledColA.forEach(item => {
+                        // ColA is Numbers -> Left Side (in Arabic RTL)
+                        colA_HTML += `<div class="match-box left-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                    });
+
+                    let colB_HTML = '';
+                    shuffledColB.forEach(item => {
+                        // ColB is Letters -> Right Side (in Arabic RTL)
+                        colB_HTML += `<div class="match-box right-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                    });
+
+                    const rightSideHTML = isEnglish ? colA_HTML : colB_HTML;
+                    const leftSideHTML = isEnglish ? colB_HTML : colA_HTML;
+
+                    inputHtml = `
+                    <div class="match-exam-wrapper" dir="${dir}">
+                        <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 5px; font-size: 1.1rem;">${index + 1}. ${q.q_ar || q.q_eng}</h4>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">(اضغط على الحرف ثم اضغط على الرقم المقابل لتوصيلهما. لحذف إجابة، اضغط على الحرف مرة أخرى).</p>
+                        
+                        <div class="match-container" id="${uniqueId}">
+                            <svg class="match-svg-layer"></svg>
+                            <div class="match-col">${rightSideHTML}</div>
+                            <div class="match-col">${leftSideHTML}</div>
+                            <input type="hidden" id="input_${uniqueId}" name="q_${index}" value="{}">
+                        </div>
+                    </div>`;
                 } else {
                     inputHtml = `<textarea class="text-answer" name="q_${index}" oninput="saveAnswer(${index}, this.value)" placeholder="اكتب إجابتك هنا...">${savedAnswer}</textarea>`;
                 }
@@ -388,7 +579,7 @@
                 let questionText = q.q_eng ? `<div class="eng-text-q">${q.q_eng}</div>` : `<div class="ar-text">${q.q_ar}</div>`;
 
                 html += `
-                <div class="question-card ${skipClass}" id="card_${index}">
+                <div class="question-card ${skipClass}" id="card_${index}" data-q-type="${q.type}">
                     <div class="q-header"><span class="q-num">سؤال ${index + 1}</span><span class="q-points">${q.points} ${q.points === 1 ? 'درجة' : 'درجتان'}</span></div>
                     <div class="q-text">${questionText}</div>
                     ${inputHtml}
@@ -396,7 +587,18 @@
                 </div>`;
             });
             container.innerHTML = html;
+            // Initialize matching state for all matching questions
+            selectedQuestions.forEach((q, index) => {
+                if(q.type === 'matching') {
+                    const uniqueId = 'exam_match_' + index;
+                    if(!window.examMatchingState[uniqueId]) {
+                        window.examMatchingState[uniqueId] = { links: {}, activeRight: null, colors: ['#0056b3', '#00a8cc', '#28a745', '#6610f2', '#ff9800', '#e91e63'] };
+                    }
+                }
+            });
         }
+
+
 
         function saveAnswer(index, val) {
             examState.answers[`q_${index}`] = val;
@@ -442,8 +644,20 @@
             selectedQuestions.forEach((q, i) => {
                 if(examState.answers[`skip_${i}`] === true) return;
                 let answered = false;
-                if(q.type === 'tf' || q.type === 'mcq') { if(document.querySelector(`input[name="q_${i}"]:checked`)) answered = true; } 
-                else { if(document.querySelector(`textarea[name="q_${i}"]`).value.trim() !== '') answered = true; }
+                if(q.type === 'tf' || q.type === 'mcq') { 
+                    if(document.querySelector(`input[name="q_${i}"]:checked`)) answered = true; 
+                } 
+                else if(q.type === 'matching') { 
+                    // Check if any connections were made in matching question
+                    const uniqueId = 'exam_match_' + i;
+                    const state = window.examMatchingState[uniqueId];
+                    if(state && Object.keys(state.links).length > 0) {
+                        answered = true;
+                    }
+                }
+                else { 
+                    if(document.querySelector(`textarea[name="q_${i}"]`).value.trim() !== '') answered = true; 
+                }
 
                 if(!answered) {
                     allAnswered = false; document.getElementById(`card_${i}`).classList.add('unanswered');
@@ -451,6 +665,21 @@
                 }
             });
             if(!allAnswered) { document.getElementById('validationModal').classList.add('active'); firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+            
+            // Before grading, sync matching state to hidden inputs
+            selectedQuestions.forEach((q, i) => {
+                if(q.type === 'matching') {
+                    const uniqueId = 'exam_match_' + i;
+                    const state = window.examMatchingState[uniqueId];
+                    if(state) {
+                        const hiddenInput = document.getElementById('input_' + uniqueId);
+                        if(hiddenInput) {
+                            hiddenInput.value = JSON.stringify(state.links);
+                        }
+                    }
+                }
+            });
+            
             processGrading();
         }
 
@@ -486,6 +715,35 @@
                     let cleanModelAnswer = correctAnswerText.replace(/^[أبجده]\.\s*/, '').trim();
                     if(normalizeText(studentAns) === normalizeText(cleanModelAnswer)) { isCorrect = true; rawScore += q.points; }
                     htmlReview += buildReviewCard(i, q, studentAns, cleanModelAnswer, isCorrect, isCorrect ? q.points : 0);
+                } else if (q.type === 'matching') {
+                    // Grade matching question - parse JSON from hidden input
+                    let userConnections = {};
+                    const hiddenInput = document.querySelector(`input[name="q_${i}"]`);
+                    if(hiddenInput) {
+                        try {
+                            userConnections = JSON.parse(hiddenInput.value || "{}");
+                        } catch(e) {
+                            userConnections = {};
+                        }
+                    }
+                    let correctConnections = q.answers || {};
+                    let questionScore = 0;
+                    let totalPairs = Object.keys(correctConnections).length;
+                    let correctCount = 0;
+                    for (let key in userConnections) {
+                        if (userConnections[key] === correctConnections[key]) {
+                            correctCount++;
+                        }
+                    }
+                    // All or nothing: 1 point if all pairs are correct
+                    if(correctCount === totalPairs) {
+                        questionScore = 1;
+                        isCorrect = true;
+                        rawScore += q.points;
+                    }
+                    let userAnswersStr = Object.keys(userConnections).length > 0 ? `${correctCount} من ${totalPairs} اتصالات صحيحة` : 'لم تتم أي اتصالات';
+                    let correctAnswersStr = `${totalPairs} اتصالات صحيحة`;
+                    htmlReview += buildReviewCard(i, q, userAnswersStr, correctAnswersStr, isCorrect, isCorrect ? q.points : 0);
                 } else {
                     let normAnsAr = normalizeText(q.a_ar || ""); let normAnsEng = normalizeText(q.a_eng || ""); 
                     if(normStd.length > 0 && (normAnsAr.includes(normStd) || normStd.includes(normAnsAr) || normAnsEng.includes(normStd) || normStd === 'ث' || normStd === 'ش')) {
@@ -522,6 +780,62 @@
             document.getElementById('certScore').innerText = `${score}/${TOTAL_SCORE}`;
             document.getElementById('certDate').innerText = `${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`;
         }
+
+        window.drawMatchLines = function(btn, containerId, answersStr) {
+            const container = document.getElementById(containerId);
+            if(!container) return;
+            const svg = container.querySelector('.match-svg-layer');
+            svg.innerHTML = '';
+            const answers = JSON.parse(decodeURIComponent(answersStr));
+            const colors = ['#0056b3', '#00a8cc', '#28a745', '#6610f2'];
+            let colorIdx = 0;
+            const cRect = container.getBoundingClientRect();
+
+            for (const [qId, aId] of Object.entries(answers)) {
+                const boxQ = container.querySelector(`.question-item[data-id="${qId}"]`);
+                const boxA = container.querySelector(`.answer-item[data-id="${aId}"]`);
+                
+                if(boxQ && boxA) {
+                    const color = colors[colorIdx % colors.length];
+                    boxQ.style.borderColor = color; boxA.style.borderColor = color;
+                    boxQ.style.backgroundColor = color + '1a'; boxA.style.backgroundColor = color + '1a';
+                    boxQ.querySelector('.match-badge').style.backgroundColor = color; boxQ.querySelector('.match-badge').style.color = '#fff';
+                    boxA.querySelector('.match-badge').style.backgroundColor = color; boxA.querySelector('.match-badge').style.color = '#fff';
+                    
+                    const rectQ = boxQ.getBoundingClientRect();
+                    const rectA = boxA.getBoundingClientRect();
+                    
+                    const isQLeft = rectQ.left < rectA.left;
+                    
+                    let startX, startY, endX, endY;
+                    if (isQLeft) {
+                        // Question is on the left, draw from its right edge to answer's left edge
+                        startX = rectQ.right - cRect.left;
+                        endX = rectA.left - cRect.left;
+                    } else {
+                        // Question is on the right, draw from its left edge to answer's right edge
+                        startX = rectQ.left - cRect.left;
+                        endX = rectA.right - cRect.left;
+                    }
+                    
+                    startY = rectQ.top + (rectQ.height / 2) - cRect.top;
+                    endY = rectA.top + (rectA.height / 2) - cRect.top;
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', startX); line.setAttribute('y1', startY);
+                    line.setAttribute('x2', endX); line.setAttribute('y2', endY);
+                    line.setAttribute('stroke', color);
+                    line.classList.add('match-line');
+                    
+                    line.style.animationDelay = `${colorIdx * 1.0}s`;
+                    svg.appendChild(line);
+                    
+                    colorIdx++;
+                }
+            }
+            btn.style.display = 'none';
+            container.parentElement.querySelector('.match-exp').style.display = 'block';
+        };
 
         function downloadCertificate() {
             const wrapper = document.getElementById('certWrapper'); const element = document.getElementById('certificateElement');

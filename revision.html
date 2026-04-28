@@ -88,6 +88,27 @@
             .lesson-title-area { flex-direction: column; text-align: center; }
             .nav-controls { width: 100%; justify-content: center; }
         }
+
+        /* Flawless Matching UI V3 */
+        /* Force 2 columns on PC, 1 on Mobile */
+        .questions-grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+        @media (max-width: 900px) { .questions-grid-container { grid-template-columns: 1fr; } }
+
+        .match-wrapper { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); display: flex; flex-direction: column; }
+        .match-container { position: relative; display: flex; justify-content: space-between; gap: 50px; margin: 20px 0; min-height: 200px; flex-grow: 1; }
+        .match-svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .match-col { display: flex; flex-direction: column; gap: 15px; width: 45%; z-index: 2; }
+        .match-box { border: 2px solid #e0e0e0; padding: 10px 15px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.95rem; background: #fff; z-index: 2; position: relative; transition: 0.3s; min-height: 50px; }
+        .match-badge { background: #eef5fc; color: var(--primary); min-width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 900; font-size: 0.9rem; flex-shrink: 0; }
+
+        /* 1.5s duration for line drawing */
+        .match-line { stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawMatchLine 1.5s forwards ease-in-out; }
+        @keyframes drawMatchLine { to { stroke-dashoffset: 0; } }
+
+        .match-exp { margin-top: 15px; background: #e8f5e9; border-right: 5px solid #28a745; padding: 15px; border-radius: 8px; color: #155724; font-size: 0.95rem; font-weight: bold; display: none; animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .show-answer-btn { width: 100%; background: #fff; color: var(--primary); border: 2px solid var(--primary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: auto; font-size: 1rem; }
+        .show-answer-btn:hover { background: var(--primary); color: #fff; }
     </style>
 </head>
 <body>
@@ -138,6 +159,62 @@
             { key: 'list', label: 'List' }
         ];
         let currentTabs = defaultTabs;
+
+        window.drawMatchLines = function(btn, containerId, answersStr) {
+            const container = document.getElementById(containerId);
+            if(!container) return;
+            const svg = container.querySelector('.match-svg-layer');
+            svg.innerHTML = '';
+            const answers = JSON.parse(decodeURIComponent(answersStr));
+            const colors = ['#0056b3', '#00a8cc', '#28a745', '#6610f2'];
+            let colorIdx = 0;
+            const cRect = container.getBoundingClientRect();
+
+            for (const [qId, aId] of Object.entries(answers)) {
+                const boxQ = container.querySelector(`.question-item[data-id="${qId}"]`);
+                const boxA = container.querySelector(`.answer-item[data-id="${aId}"]`);
+                
+                if(boxQ && boxA) {
+                    const color = colors[colorIdx % colors.length];
+                    boxQ.style.borderColor = color; boxA.style.borderColor = color;
+                    boxQ.style.backgroundColor = color + '1a'; boxA.style.backgroundColor = color + '1a';
+                    boxQ.querySelector('.match-badge').style.backgroundColor = color; boxQ.querySelector('.match-badge').style.color = '#fff';
+                    boxA.querySelector('.match-badge').style.backgroundColor = color; boxA.querySelector('.match-badge').style.color = '#fff';
+                    
+                    const rectQ = boxQ.getBoundingClientRect();
+                    const rectA = boxA.getBoundingClientRect();
+                    
+                    const isQLeft = rectQ.left < rectA.left;
+                    
+                    let startX, startY, endX, endY;
+                    if (isQLeft) {
+                        // Question is on the left, draw from its right edge to answer's left edge
+                        startX = rectQ.right - cRect.left;
+                        endX = rectA.left - cRect.left;
+                    } else {
+                        // Question is on the right, draw from its left edge to answer's right edge
+                        startX = rectQ.left - cRect.left;
+                        endX = rectA.right - cRect.left;
+                    }
+                    
+                    startY = rectQ.top + (rectQ.height / 2) - cRect.top;
+                    endY = rectA.top + (rectA.height / 2) - cRect.top;
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', startX); line.setAttribute('y1', startY);
+                    line.setAttribute('x2', endX); line.setAttribute('y2', endY);
+                    line.setAttribute('stroke', color);
+                    line.classList.add('match-line');
+                    
+                    line.style.animationDelay = `${colorIdx * 1.0}s`;
+                    svg.appendChild(line);
+                    
+                    colorIdx++;
+                }
+            }
+            btn.style.display = 'none';
+            container.parentElement.querySelector('.match-exp').style.display = 'block';
+        };
 
         window.onload = function() {
             document.getElementById('loader').style.display = 'flex';
@@ -218,6 +295,49 @@
             let html = '';
             dataArray.forEach((item, index) => {
                 
+                // Check if this is a matching question
+                if(type === 'matching' || item.type === 'matching' || (item.colA && item.colB && item.answers)) {
+                    const isEnglish = /[a-zA-Z]/.test(item.q_ar || item.q_eng || "");
+                    const dir = isEnglish ? 'ltr' : 'rtl';
+                    
+                    // colA is ALWAYS the Question (Letters)
+                    let colA_HTML = '';
+                    if(item.colA) {
+                        item.colA.forEach(item => {
+                            colA_HTML += `<div class="match-box question-item" data-id="${item.id}"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                        });
+                    }
+
+                    // colB is ALWAYS the Answer (Numbers)
+                    let colB_HTML = '';
+                    if(item.colB) {
+                        item.colB.forEach(item => {
+                            colB_HTML += `<div class="match-box answer-item" data-id="${item.id}"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                        });
+                    }
+
+                    const uniqueId = 'match-' + Math.random().toString(36).substr(2, 9);
+                    const answersJson = encodeURIComponent(JSON.stringify(item.answers));
+
+                    // Because of flexbox and 'dir' attribute:
+                    // In RTL (Arabic), the first element (colA_HTML) naturally renders on the RIGHT.
+                    // In LTR (English), the first element (colA_HTML) naturally renders on the LEFT.
+                    // This removes the need for manual swapping.
+
+                    html += `
+                    <div class="match-wrapper" dir="${dir}">
+                        <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; text-align: center;">${item.q_ar || item.q_eng}</h4>
+                        <div class="match-container" id="${uniqueId}">
+                            <svg class="match-svg-layer"></svg>
+                            <div class="match-col">${colA_HTML}</div>
+                            <div class="match-col">${colB_HTML}</div>
+                        </div>
+                        <button class="show-answer-btn" onclick="drawMatchLines(this, '${uniqueId}', '${answersJson}')">عرض الإجابة <i class="fa-solid fa-eye"></i></button>
+                        <div class="match-exp">💡 <strong>الشرح:</strong> ${item.exp}</div>
+                    </div>`;
+                    return;
+                }
+                
                 let optionsHtml = '';
                 if (item.options) {
                     optionsHtml = '<div style="margin-top:15px; font-weight:600; line-height:1.8; font-size: 1.05rem; color: var(--primary); text-align: right; direction: rtl;">' + item.options.map(o => `<div style="background:#f4f8fb; padding:8px 15px; border-radius:8px; margin-bottom:8px; border:1px solid #e0e0e0;">${o}</div>`).join('') + '</div>';
@@ -272,7 +392,7 @@
                     </div>
                 </div>`;
             });
-            return html;
+            return `<div class="questions-grid-container">${html}</div>`;
         }
 
         function toggleAnswer(btn) {

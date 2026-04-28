@@ -84,6 +84,42 @@
             .lesson-title-area h2 { font-size: 1.4rem; }
             .nav-btn { font-size: 0.9rem; padding: 8px 12px; }
         }
+
+        /* Lesson Page UI - Manhaaji Platform */
+        .lesson-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px; }
+        @media (max-width: 900px) { .lesson-grid { grid-template-columns: 1fr; } }
+
+        /* Video on the Left (RTL context means 2nd column visually, but let's just use grid order. Actually, let's use flex-direction or grid placement. Since Arabic is RTL, grid col 1 is Right (PDF), col 2 is Left (Video)) */
+        .lesson-right-col { grid-column: 1 / 2; } /* For PDF */
+        .lesson-left-col { grid-column: 2 / 3; } /* For Video & Tabs */
+        @media (max-width: 900px) { .lesson-right-col { grid-column: 1 / -1; } .lesson-left-col { grid-column: 1 / -1; order: -1; /* Video on top in mobile */ } .lesson-grid { display: flex; flex-direction: column; } }
+
+        .media-wrapper { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid var(--primary); margin-bottom: 25px; }
+        .media-wrapper.pdf-box { border-top-color: var(--success); height: 600px; }
+        .media-wrapper iframe { width: 100%; height: 100%; border: none; }
+        .media-wrapper.vid-box iframe { aspect-ratio: 16/9; height: auto; }
+
+        /* Interactive Dynamic Tabs */
+        .l-tabs-nav { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; border-bottom: 2px solid #eef5fc; }
+        .l-tabs-nav::-webkit-scrollbar { display: none; }
+        .l-tab-btn { background: #f4f7f6; color: #555; border: none; padding: 10px 20px; border-radius: 8px 8px 0 0; font-weight: 800; cursor: pointer; white-space: nowrap; transition: 0.3s; font-family: 'Cairo'; border-bottom: 3px solid transparent; font-size: 1rem;}
+        .l-tab-btn:hover { color: var(--primary); background: #eef5fc; }
+        .l-tab-btn.active { color: var(--primary); background: #eef5fc; border-bottom: 3px solid var(--primary); }
+
+        /* Tab Content with Animation */
+        .l-tab-content { display: none; background: #fff; padding: 25px; border-radius: 0 0 15px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eef5fc; border-top: none; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; line-height: 1.8; font-size: 1.05rem; color: #333; }
+        .l-tab-content.active { display: block; }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Rich Text Formatting inside Tabs */
+        .l-tab-content ul { padding-right: 20px; margin-top: 10px; }
+        .l-tab-content li { margin-bottom: 10px; }
+        .l-tab-content strong { color: var(--primary); }
+        .l-tab-content p { margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -105,29 +141,8 @@
             <p id="unitDescription">جاري جلب تفاصيل الشرح...</p>
         </div>
 
-        <div class="layout-grid">
-            <div class="pdf-section">
-                <h3><i class="fas fa-file-pdf"></i> عرض المذكرة والشرح</h3>
-                <div class="pdf-container">
-                    <iframe id="pdfFrame" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
-                </div>
-            </div>
-
-            <div class="tools-section">
-                <div class="tool-card">
-                    <h3><i class="fas fa-tools"></i> أدوات الوحدة</h3>
-                    <button class="action-btn btn-download" onclick="downloadPDF()"><i class="fas fa-download"></i> تحميل الـ PDF</button>
-                    <button class="action-btn btn-test" onclick="goToQuiz()"><i class="fas fa-laptop-code"></i> تدريبات الوحدة</button>
-                </div>
-                <div class="tool-card">
-                    <h3><i class="fab fa-youtube"></i> فيديو الشرح</h3>
-                    <div class="video-wrapper" onclick="openVideoFull()">
-                        <iframe id="videoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <div class="video-overlay"><i class="far fa-play-circle"></i></div>
-                    </div>
-                    <p style="font-size:0.8rem; color:#777; margin-top:8px; margin-bottom: 0;">اضغط لتكبير الفيديو</p>
-                </div>
-            </div>
+        <div id="lessonContent">
+            <!-- Dynamic content will be inserted here -->
         </div>
 
         <div class="navigation-area">
@@ -152,6 +167,17 @@
         let units = [];
         let currentUnitIndex = 0;
         let currentSubject = "";
+
+        window.openLessonTab = function(tabId, btnElement) {
+            const container = btnElement.closest('.custom-tabs-container');
+            // Deactivate all
+            container.querySelectorAll('.l-tab-btn').forEach(btn => btn.classList.remove('active'));
+            container.querySelectorAll('.l-tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Activate target
+            btnElement.classList.add('active');
+            container.querySelector('#' + tabId).classList.add('active');
+        };
 
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -188,12 +214,57 @@
             document.getElementById('unitTitle').innerText = unit.title;
             document.getElementById('unitDescription').innerHTML = `<strong>${window.lessonData.pageTitle}</strong><br>${unit.description}`;
             
+            // Generate extra tabs if available
+            let extraTabsNav = '';
+            let extraTabsBody = '';
+
+            if (unit.extraTabs && Array.isArray(unit.extraTabs) && unit.extraTabs.length > 0) {
+                unit.extraTabs.forEach((tab, idx) => {
+                    const isActive = idx === 0 ? 'active' : '';
+                    const uniqueTabId = 'tab_' + unit.id + '_' + idx;
+                    
+                    extraTabsNav += `<button class="l-tab-btn ${isActive}" onclick="openLessonTab('${uniqueTabId}', this)">${tab.title}</button>`;
+                    extraTabsBody += `<div id="${uniqueTabId}" class="l-tab-content ${isActive}">${tab.content}</div>`;
+                });
+            }
+
             let pdfLink = unit.pdf;
             if(pdfLink && pdfLink.includes('/view')) {
                 pdfLink = pdfLink.replace('/view', '/preview');
             }
-            document.getElementById('pdfFrame').src = pdfLink;
-            document.getElementById('videoFrame').src = unit.vid;
+
+            const html = `
+<div class="unit-card" style="background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #eee;">
+    <div class="lesson-grid">
+        <div class="lesson-right-col">
+            <h3 style="color: var(--success); font-size: 1.2rem; margin-bottom: 15px;"><i class="fa-solid fa-file-pdf"></i> ملزمة الوحدة (PDF)</h3>
+            <div class="media-wrapper pdf-box">
+                <iframe src="${pdfLink}" loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div class="lesson-left-col">
+            <h3 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 15px;"><i class="fa-solid fa-circle-play"></i> الشرح المرئي (فيديو)</h3>
+            <div class="media-wrapper vid-box">
+                <iframe src="${unit.vid}" allowfullscreen loading="lazy"></iframe>
+            </div>
+
+            ${extraTabsNav ? `
+            <div class="custom-tabs-container" style="margin-top: 30px;">
+                <div class="l-tabs-nav">
+                    ${extraTabsNav}
+                </div>
+                <div class="l-tabs-body">
+                    ${extraTabsBody}
+                </div>
+            </div>
+            ` : ''}
+        </div>
+    </div>
+</div>
+`;
+
+            document.getElementById('lessonContent').innerHTML = html;
             
             document.getElementById('prevUnitBtn').disabled = (currentUnitIndex === 0);
             
@@ -241,7 +312,7 @@
         }
 
         function openVideoFull() { 
-            const iframe = document.getElementById('videoFrame'); 
+            const iframe = document.querySelector('.media-wrapper.vid-box iframe'); 
             if (iframe.requestFullscreen) { iframe.requestFullscreen(); } 
             else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); } 
         }
