@@ -300,41 +300,51 @@
                     const isEnglish = /[a-zA-Z]/.test(item.q_ar || item.q_eng || "");
                     const dir = isEnglish ? 'ltr' : 'rtl';
                     
-                    // colA is ALWAYS the Question (Letters)
+                    // 1. CLEAN THE TITLE: Remove anything after the first '(' to hide the ugly raw array text.
+                    let rawTitle = item.q_ar || item.q_eng || "صل الكلمة بما يناسبها:";
+                    let cleanTitle = rawTitle.split('(')[0].trim();
+                    
+                    // 2. AUTO-GENERATE TEXT ANSWER: Convert {"أ":"3", "ب":"1"} into "(أ مع 3 ، ب مع 1)"
+                    let textAnswerStr = Object.entries(item.answers || {})
+                        .map(([k, v]) => `${k} مع ${v}`)
+                        .join(' ، ');
+
                     let colA_HTML = '';
                     if(item.colA) {
-                        item.colA.forEach(item => {
-                            colA_HTML += `<div class="match-box question-item" data-id="${item.id}"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                        item.colA.forEach(matchItem => {
+                            colA_HTML += `<div class="match-box left-item question-item" data-id="${matchItem.id}"><div class="match-badge">${matchItem.id}</div> <span>${matchItem.text}</span></div>`;
                         });
                     }
 
-                    // colB is ALWAYS the Answer (Numbers)
                     let colB_HTML = '';
                     if(item.colB) {
-                        item.colB.forEach(item => {
-                            colB_HTML += `<div class="match-box answer-item" data-id="${item.id}"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                        item.colB.forEach(matchItem => {
+                            colB_HTML += `<div class="match-box right-item answer-item" data-id="${matchItem.id}"><div class="match-badge">${matchItem.id}</div> <span>${matchItem.text}</span></div>`;
                         });
                     }
 
                     const uniqueId = 'match-' + Math.random().toString(36).substr(2, 9);
                     const answersJson = encodeURIComponent(JSON.stringify(item.answers));
 
-                    // Because of flexbox and 'dir' attribute:
-                    // In RTL (Arabic), the first element (colA_HTML) naturally renders on the RIGHT.
-                    // In LTR (English), the first element (colA_HTML) naturally renders on the LEFT.
-                    // This removes the need for manual swapping.
-
-                    html += `
-                    <div class="match-wrapper" dir="${dir}">
-                        <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; text-align: center;">${item.q_ar || item.q_eng}</h4>
-                        <div class="match-container" id="${uniqueId}">
-                            <svg class="match-svg-layer"></svg>
-                            <div class="match-col">${colA_HTML}</div>
-                            <div class="match-col">${colB_HTML}</div>
-                        </div>
-                        <button class="show-answer-btn" onclick="drawMatchLines(this, '${uniqueId}', '${answersJson}')">عرض الإجابة <i class="fa-solid fa-eye"></i></button>
-                        <div class="match-exp">💡 <strong>الشرح:</strong> ${item.exp}</div>
-                    </div>`;
+                   html += `
+    <div class="match-wrapper" dir="${dir}">
+        <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; text-align: center;">
+            <span style="background: var(--primary); color: white; padding: 2px 10px; border-radius: 5px; margin-left: 8px;">${index + 1}</span> 
+            ${cleanTitle}
+        </h4>
+        <div class="match-container" id="${uniqueId}">
+            <svg class="match-svg-layer"></svg>
+            <div class="match-col">${colA_HTML}</div>
+            <div class="match-col">${colB_HTML}</div>
+        </div>
+        <button class="show-answer-btn" onclick="drawMatchLines(this, '${uniqueId}', '${answersJson}')">عرض الإجابة <i class="fa-solid fa-eye"></i></button>
+        <div class="match-exp">
+            <div style="margin-bottom: 10px; color: var(--primary); border-bottom: 1px dashed #ccc; padding-bottom: 10px;">
+                <strong>الإجابة:</strong> (${textAnswerStr})
+            </div>
+            <div>💡 <strong>الشرح:</strong> ${item.exp}</div>
+        </div>
+    </div>`;
                     return;
                 }
                 
