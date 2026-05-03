@@ -160,10 +160,36 @@
         ];
         let currentTabs = defaultTabs;
 
+        /* Formatter for explanation text with letter points */
+        window.formatExplanation = function(expText) {
+            if (!expText) return '';
+            let formatted = expText
+                // Replace Arabic comma before letter points with line breaks
+                .replace(/،\s*([أ-ي]\.)\s*/g, '<br><br><span style="color: var(--primary); font-weight: 800; font-size: 1.1rem;">$1</span> ')
+                // Highlight the first letter point if it exists
+                .replace(/^([أ-ي]\.)/g, '<span style="color: var(--primary); font-weight: 800; font-size: 1.1rem;">$1</span>');
+            return formatted;
+        };
+
         window.drawMatchLines = function(btn, containerId, answersStr) {
             const container = document.getElementById(containerId);
             if(!container) return;
             const svg = container.querySelector('.match-svg-layer');
+            const matchExp = container.parentElement.querySelector('.match-exp');
+            
+            // Check if lines are already drawn
+            const isShowing = matchExp.style.display === 'block';
+            
+            if(isShowing) {
+                // Hide: Clear lines and hide explanation
+                svg.innerHTML = '';
+                matchExp.style.display = 'none';
+                btn.innerHTML = 'عرض الإجابة <i class="fa-solid fa-eye"></i>';
+                btn.style.display = 'block';
+                return;
+            }
+            
+            // Show: Draw lines and display explanation
             svg.innerHTML = '';
             const answers = JSON.parse(decodeURIComponent(answersStr));
             const colors = ['#0056b3', '#00a8cc', '#28a745', '#6610f2'];
@@ -212,8 +238,8 @@
                     colorIdx++;
                 }
             }
-            btn.style.display = 'none';
-            container.parentElement.querySelector('.match-exp').style.display = 'block';
+            btn.innerHTML = 'إخفاء الإجابة <i class="fa-solid fa-chevron-up"></i>';
+            matchExp.style.display = 'block';
         };
 
         window.onload = function() {
@@ -325,6 +351,7 @@
 
                     const uniqueId = 'match-' + Math.random().toString(36).substr(2, 9);
                     const answersJson = encodeURIComponent(JSON.stringify(item.answers));
+                    const formattedExp = formatExplanation(item.exp);
 
                    html += `
     <div class="match-wrapper" dir="${dir}">
@@ -338,11 +365,11 @@
             <div class="match-col">${colB_HTML}</div>
         </div>
         <button class="show-answer-btn" onclick="drawMatchLines(this, '${uniqueId}', '${answersJson}')">عرض الإجابة <i class="fa-solid fa-eye"></i></button>
-        <div class="match-exp">
-            <div style="margin-bottom: 10px; color: var(--primary); border-bottom: 1px dashed #ccc; padding-bottom: 10px;">
-                <strong>الإجابة:</strong> (${textAnswerStr})
+        <div class="match-exp" style="line-height: 1.8; padding: 18px; background: #e9f7ef; margin-top: 15px; border-radius: 8px;">
+            <div style="margin-bottom: 15px; color: var(--primary); border-bottom: 1px dashed #ccc; padding-bottom: 12px;">
+                <strong style="font-size: 1.05rem;">الإجابة:</strong> (${textAnswerStr})
             </div>
-            <div>💡 <strong>الشرح:</strong> ${item.exp}</div>
+            <div style="color: #155724; font-size: 0.98rem;">💡 <strong>الشرح:</strong> <div style="margin-top: 10px; line-height: 1.8;">${formattedExp}</div></div>
         </div>
     </div>`;
                     return;
@@ -372,6 +399,7 @@
 
                 let questionSection = '';
                 let answerSection = '';
+                const formattedExp = formatExplanation(item.exp);
 
                 if (item.q_eng && item.q_eng.trim() !== "") {
                     questionSection = `<div class="question-eng eng-text">${item.q_eng} ${optionsHtml}</div><div class="question-ar ar-text">${item.q_ar}</div>`;
@@ -398,7 +426,7 @@
                     <button class="toggle-btn ar-text" onclick="toggleAnswer(this)">إظهار الإجابة <i class="fas fa-chevron-down"></i></button>
                     <div class="answer-container">
                         ${answerSection}
-                        ${item.exp ? `<div class="explanation ar-text" style="margin-top: 15px;"><i class="fas fa-lightbulb"></i> <strong>الشرح:</strong> ${item.exp}</div>` : ''}
+                        ${item.exp ? `<div class="explanation ar-text" style="margin-top: 15px; line-height: 1.8; padding: 15px;"><i class="fas fa-lightbulb"></i> <strong>الشرح:</strong> <div style="margin-top: 10px; line-height: 1.8;">${formattedExp}</div></div>` : ''}
                     </div>
                 </div>`;
             });

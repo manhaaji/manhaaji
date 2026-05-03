@@ -93,10 +93,10 @@
         
         /* Interactive Exam Matching UI */
         .match-exam-wrapper { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); margin-bottom: 25px; }
-        .match-container { position: relative; display: flex; justify-content: space-between; gap: 50px; margin: 20px 0; min-height: 200px; user-select: none; }
-        .match-svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .match-col { display: flex; flex-direction: column; gap: 15px; width: 45%; z-index: 2; }
-        .match-box { border: 2px solid #e0e0e0; padding: 10px 15px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.95rem; background: #fff; z-index: 2; position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); min-height: 50px; cursor: pointer; }
+        .match-container { position: relative; display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; justify-content: space-between !important; gap: 30px !important; width: 100% !important; margin: 20px 0; min-height: 200px; user-select: none; }
+        .match-svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+        .match-col { display: flex; flex-direction: column; gap: 15px; flex: 1; min-width: 45%; max-width: 48%; z-index: 2; }
+        .match-box { border: 2px solid #e0e0e0; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 0.95rem; background: #fff; z-index: 2; position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); min-height: 50px; cursor: pointer; white-space: normal; }
         .match-badge { background: #eef5fc; color: var(--primary); min-width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 900; font-size: 0.9rem; flex-shrink: 0; transition: 0.3s; }
 
         /* Interactive States */
@@ -109,7 +109,38 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
 
-        @media (max-width: 900px) { .match-container { gap: 20px; } .match-col { width: 48%; } .match-box { flex-direction: column; text-align: center; gap: 5px; padding: 8px; font-size: 0.85rem;} .match-badge { margin: 0 auto; } }
+        /* === MOBILE FIXES FOR MATCHING UI === */
+        @media (max-width: 768px) {
+            .match-container {
+                gap: 25px !important;
+            }
+            .match-col {
+                min-width: 48%;
+                max-width: 45% !important;
+            }
+            .match-box, .match-item, .match-btn {
+                flex-direction: row !important;
+                padding: 5px 8px !important;
+                min-height: 60px !important;
+                gap: 6px !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                text-align: right !important;
+            }
+            .match-box span {
+                font-size: 0.78rem !important;
+                line-height: 1.3 !important;
+                display: block;
+                text-align: right !important;
+            }
+            .match-badge {
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+                width: 22px !important;
+                height: 22px !important;
+                font-size: 0.75rem !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -239,40 +270,42 @@
         window.handleMatchClick = function(box) {
             const container = box.closest('.match-container');
             const qid = container.id;
-            const isRight = box.classList.contains('right-item'); // Letters (Questions)
+            const isLetter = box.classList.contains('right-item'); // Letters: أ, ب, ج (right-item on RTL layout)
             const itemId = box.dataset.id;
 
             if (!window.examMatchingState[qid]) {
-                window.examMatchingState[qid] = { links: {}, activeRight: null, colors: ['#0056b3', '#00a8cc', '#28a745', '#6610f2', '#ff9800', '#e91e63'] };
+                window.examMatchingState[qid] = { links: {}, activeLetter: null, colors: ['#0056b3', '#00a8cc', '#28a745', '#6610f2', '#ff9800', '#e91e63'] };
             }
             const state = window.examMatchingState[qid];
 
-            if (isRight) {
-                // If clicking a right item that is already linked -> UNLINK IT
+            if (isLetter) {
+                // Clicking a LETTER (right-item, visually on the RIGHT in RTL)
+                // If this letter is already linked -> UNLINK IT
                 if (state.links[itemId]) {
                     delete state.links[itemId];
-                    state.activeRight = null;
+                    state.activeLetter = null;
                     redrawExamLines(container, state);
                     return;
                 }
                 
-                // Deselect previous active if any
-                if (state.activeRight) {
-                    container.querySelector(`.right-item[data-id="${state.activeRight}"]`).classList.remove('active-pulse');
+                // Deselect previous active letter if any
+                if (state.activeLetter) {
+                    container.querySelector(`.right-item[data-id="${state.activeLetter}"]`).classList.remove('active-pulse');
                 }
                 
-                // Select new
-                if (state.activeRight !== itemId) {
-                    state.activeRight = itemId;
+                // Select new letter
+                if (state.activeLetter !== itemId) {
+                    state.activeLetter = itemId;
                     box.classList.add('active-pulse');
                 } else {
-                    state.activeRight = null; // toggle off
+                    state.activeLetter = null; // toggle off
                 }
             } else {
-                // Clicking a left item (Numbers/Answers)
-                if (!state.activeRight) return; // Must select a right item first
+                // Clicking a NUMBER (left-item, visually on the LEFT in RTL)
+                // Must have selected a letter first
+                if (!state.activeLetter) return;
 
-                // Check if this left item is already linked to another right item
+                // Check if this number is already linked to another letter
                 const alreadyLinkedTo = Object.keys(state.links).find(key => state.links[key] === itemId);
                 if (alreadyLinkedTo) {
                     // ERROR: Show red shake
@@ -281,10 +314,10 @@
                     return;
                 }
 
-                // Create Link!
-                state.links[state.activeRight] = itemId;
-                container.querySelector(`.right-item[data-id="${state.activeRight}"]`).classList.remove('active-pulse');
-                state.activeRight = null;
+                // Create Link: Letter -> Number
+                state.links[state.activeLetter] = itemId;
+                container.querySelector(`.right-item[data-id="${state.activeLetter}"]`).classList.remove('active-pulse');
+                state.activeLetter = null;
                 
                 redrawExamLines(container, state);
             }
@@ -306,15 +339,15 @@
             const hiddenInput = document.getElementById('input_' + container.id);
             hiddenInput.value = JSON.stringify(state.links); // Update hidden input for grading
 
-            for (const [rightId, leftId] of Object.entries(state.links)) {
-                const boxR = container.querySelector(`.right-item[data-id="${rightId}"]`);
-                const boxL = container.querySelector(`.left-item[data-id="${leftId}"]`);
+            for (const [letterId, numberId] of Object.entries(state.links)) {
+                const boxLetter = container.querySelector(`.right-item[data-id=\"${letterId}\"]`);
+                const boxNumber = container.querySelector(`.left-item[data-id=\"${numberId}\"]`);
                 
-                if (boxR && boxL) {
+                if (boxLetter && boxNumber) {
                     const color = state.colors[colorIdx % state.colors.length];
                     
-                    // Apply colors
-                    [boxR, boxL].forEach(b => {
+                    // Apply colors to both boxes
+                    [boxLetter, boxNumber].forEach(b => {
                         b.style.borderColor = color; 
                         b.style.backgroundColor = color + '1a';
                         const badge = b.querySelector('.match-badge');
@@ -322,18 +355,15 @@
                         badge.style.color = '#fff';
                     });
 
-                    // Draw Line
-                    const rectR = boxR.getBoundingClientRect();
-                    const rectL = boxL.getBoundingClientRect();
-                    const isRLeft = rectR.left < rectL.left;
-                    
-                    const pLeftBox = isRLeft ? rectR : rectL;
-                    const pRightBox = isRLeft ? rectL : rectR;
+                    // Draw Line: From Number (left) to Letter (right) connecting inner edges
+                    const rectLetter = boxLetter.getBoundingClientRect();
+                    const rectNumber = boxNumber.getBoundingClientRect();
 
-                    const x1 = pLeftBox.right - cRect.left; 
-                    const y1 = pLeftBox.top + (pLeftBox.height / 2) - cRect.top;
-                    const x2 = pRightBox.left - cRect.left; 
-                    const y2 = pRightBox.top + (pRightBox.height / 2) - cRect.top;
+                    // In RTL: Letter on RIGHT, Number on LEFT. Draw from inner edge of right-item to inner edge of left-item.
+                    const x1 = rectLetter.left - cRect.left; 
+                    const y1 = rectLetter.top + (rectLetter.height / 2) - cRect.top;
+                    const x2 = rectNumber.right - cRect.left;
+                    const y2 = rectNumber.top + (rectNumber.height / 2) - cRect.top;
 
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     line.setAttribute('x1', x1); line.setAttribute('y1', y1);
@@ -547,23 +577,23 @@
 
                     let colA_HTML = '';
                     shuffledColA.forEach(item => {
-                        // ColA is Numbers -> Left Side (in Arabic RTL)
-                        colA_HTML += `<div class="match-box left-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                        // colA contains Letters (Right side visually) -> MUST HAVE 'right-item'
+                        colA_HTML += `<div class="match-box right-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
                     });
 
                     let colB_HTML = '';
                     shuffledColB.forEach(item => {
-                        // ColB is Letters -> Right Side (in Arabic RTL)
-                        colB_HTML += `<div class="match-box right-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
+                        // colB contains Numbers (Left side visually) -> MUST HAVE 'left-item'
+                        colB_HTML += `<div class="match-box left-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
                     });
 
-                    const rightSideHTML = isEnglish ? colA_HTML : colB_HTML;
-                    const leftSideHTML = isEnglish ? colB_HTML : colA_HTML;
+                    const rightSideHTML = colA_HTML; // Put right-items on the right
+                    const leftSideHTML = colB_HTML;  // Put left-items on the left
 
                     inputHtml = `
                     <div class="match-exam-wrapper" dir="${dir}">
                         <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 5px; font-size: 1.1rem;">${index + 1}. ${q.q_ar || q.q_eng}</h4>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">(اضغط على الحرف ثم اضغط على الرقم المقابل لتوصيلهما. لحذف إجابة، اضغط على الحرف مرة أخرى).</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">(اضغط على الحرف من اليمين ثم اضغط على الرقم المقابل من اليسار لتوصيلهما. لحذف إجابة، اضغط على الحرف مرة أخرى).</p>
                         
                         <div class="match-container" id="${uniqueId}">
                             <svg class="match-svg-layer"></svg>

@@ -21,10 +21,7 @@
         /* ---------------- الهيدر ---------------- */
         header { background: var(--white); padding: 12px 5%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
-        
-        /* حجم اللوجو الجديد */
         .custom-logo { width: 85px; height: 85px; object-fit: contain; margin-left: 5px; }
-        
         .logo-text h1 { font-family: 'Poppins', sans-serif; font-size: 1.5rem; color: var(--primary); margin: 0;}
         .logo-text p { font-size: 0.75rem; color: #7f8c8d; font-weight: 600; margin: 0;}
         .header-btn { background: var(--light); color: var(--primary); border: 1px solid var(--secondary); padding: 8px 15px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Cairo'; font-size: 0.9rem;}
@@ -38,28 +35,14 @@
         .lesson-title-area h2 { font-size: 1.8rem; margin: 0 0 10px 0; }
         .lesson-title-area p { font-size: 0.95rem; margin: 0; opacity: 0.9; line-height: 1.6; background: rgba(0,0,0,0.15); padding: 8px 15px; border-radius: 8px; display: inline-block; max-width: 90%;}
 
-        .layout-grid { display: grid; grid-template-columns: 2.8fr 1.2fr; gap: 20px; align-items: start; }
-
-        .pdf-section { background: var(--white); padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); }
-        .pdf-section h3 { margin: 0 0 15px 0; font-size: 1.2rem; color: var(--primary); }
-        .pdf-container { width: 100%; height: 75vh; min-height: 400px; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; -webkit-overflow-scrolling: touch; }
-        .pdf-container iframe { width: 100%; height: 100%; border: none; }
-
-        .tools-section { display: flex; flex-direction: column; gap: 15px; }
-        .tool-card { background: var(--white); padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border-right: 4px solid var(--secondary); transition: 0.3s; }
-        .tool-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .tool-card h3 { font-size: 1.1rem; margin: 0 0 15px 0; color: var(--primary); }
+        .lesson-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px; }
+        .lesson-right-col { grid-column: 1 / 2; } 
+        .lesson-left-col { grid-column: 2 / 3; } 
         
-        .action-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: none; font-family: 'Cairo'; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.3s; color: var(--white); }
-        .btn-download { background: var(--success); }
-        .btn-download:hover { background: #218838; box-shadow: 0 4px 10px rgba(40,167,69,0.3); }
-        .btn-test { background: var(--accent); }
-        .btn-test:hover { background: #c0392b; box-shadow: 0 4px 10px rgba(255,107,107,0.3); }
-
-        .video-wrapper { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; border: 2px solid var(--primary); transition: 0.3s; }
-        .video-wrapper iframe { width: 100%; height: 100%; border: none; pointer-events: none; }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; color: white; font-size: 2.5rem; transition: 0.3s; }
-        .video-wrapper:hover .video-overlay { background: rgba(0,0,0,0.1); transform: scale(1.05); }
+        .media-wrapper { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid var(--primary); margin-bottom: 25px; }
+        .media-wrapper.pdf-box { border-top-color: var(--success); height: 600px; }
+        .media-wrapper iframe { width: 100%; height: 100%; border: none; }
+        .media-wrapper.vid-box iframe { aspect-ratio: 16/9; height: auto; }
 
         .navigation-area { display: flex; justify-content: space-between; margin-top: 20px; background: var(--white); padding: 15px 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .nav-btn { background: var(--primary); color: var(--white); border: none; padding: 8px 20px; border-radius: 6px; font-family: 'Cairo'; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
@@ -78,27 +61,6 @@
         .btn-exam { background: var(--accent); }
         .btn-next-unit { background: var(--primary); }
 
-        @media (max-width: 900px) { 
-            .layout-grid { grid-template-columns: 1fr; } 
-            .pdf-container { height: 60vh; }
-            .lesson-title-area h2 { font-size: 1.4rem; }
-            .nav-btn { font-size: 0.9rem; padding: 8px 12px; }
-        }
-
-        /* Lesson Page UI - Manhaaji Platform */
-        .lesson-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 25px; }
-        @media (max-width: 900px) { .lesson-grid { grid-template-columns: 1fr; } }
-
-        /* Video on the Left (RTL context means 2nd column visually, but let's just use grid order. Actually, let's use flex-direction or grid placement. Since Arabic is RTL, grid col 1 is Right (PDF), col 2 is Left (Video)) */
-        .lesson-right-col { grid-column: 1 / 2; } /* For PDF */
-        .lesson-left-col { grid-column: 2 / 3; } /* For Video & Tabs */
-        @media (max-width: 900px) { .lesson-right-col { grid-column: 1 / -1; } .lesson-left-col { grid-column: 1 / -1; order: -1; /* Video on top in mobile */ } .lesson-grid { display: flex; flex-direction: column; } }
-
-        .media-wrapper { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border-top: 4px solid var(--primary); margin-bottom: 25px; }
-        .media-wrapper.pdf-box { border-top-color: var(--success); height: 600px; }
-        .media-wrapper iframe { width: 100%; height: 100%; border: none; }
-        .media-wrapper.vid-box iframe { aspect-ratio: 16/9; height: auto; }
-
         /* Interactive Dynamic Tabs */
         .l-tabs-nav { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; border-bottom: 2px solid #eef5fc; }
         .l-tabs-nav::-webkit-scrollbar { display: none; }
@@ -106,20 +68,111 @@
         .l-tab-btn:hover { color: var(--primary); background: #eef5fc; }
         .l-tab-btn.active { color: var(--primary); background: #eef5fc; border-bottom: 3px solid var(--primary); }
 
-        /* Tab Content with Animation */
-        .l-tab-content { display: none; background: #fff; padding: 25px; border-radius: 0 0 15px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eef5fc; border-top: none; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; line-height: 1.8; font-size: 1.05rem; color: #333; }
+        .l-tab-content { display: none; background: #fff; padding: 25px; border-radius: 0 0 15px 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eef5fc; border-top: none; animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; line-height: 1.8; color: #333; }
         .l-tab-content.active { display: block; }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ========================================================= */
+        /* STYLES FOR THE DYNAMIC PARSED TABS (VOCAB, SUMMARY, RULES) */
+        /* ========================================================= */
+        
+        /* 1. Vocab Styles */
+        .vocab-wrapper { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .lesson-group { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        .lesson-header { background: #0056b3; color: #fff; padding: 15px 20px; font-size: 1.2rem; font-weight: 700; border-right: 6px solid #00a8cc; display: flex; align-items: center; }
+        .lesson-header::before { content: "📚"; margin-left: 10px; font-size: 1.3rem; }
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; padding: 20px; background: #fcfcfc; }
+        .vocab-item { background: #fff; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; border-right: 4px solid #ff6b6b; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .vocab-word { font-weight: 800; color: #0056b3; font-size: 1.1rem; }
+        .vocab-relation { font-size: 0.8rem; color: #fff; background: #00a8cc; padding: 3px 8px; border-radius: 12px; margin: 0 10px; font-weight: 600; }
+        .vocab-meaning { color: #333; font-weight: 700; font-size: 1rem; }
+
+        /* 2. Summary Styles */
+        .summary-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; width: 100%; }
+        .story-card { background: #fff; border-radius: 20px; padding: 25px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-right: 8px solid #0056b3; display: flex; flex-direction: column; }
+        .story-header { border-bottom: 2px dashed #e0e0e0; padding-bottom: 15px; margin-bottom: 15px; }
+        .story-title { color: #00a8cc; font-size: 1.3rem; font-weight: 800; margin: 0; line-height: 1.4; }
+        .info-row { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.6; color: #444; }
+        .summary-label { font-weight: 800; color: #0056b3; margin-left: 5px; background: #f8f9fa; padding: 2px 8px; border-radius: 5px; }
+        .lesson-learned { background: #fff5f5; padding: 12px 15px; border-radius: 10px; margin-top: auto; border-right: 4px solid #ff6b6b; font-size: 0.95rem; line-height: 1.5; }
+
+        /* 3. Rules Styles */
+        .rules-wrapper { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .rule-section { background: #fff; border-radius: 15px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 5px solid #0056b3; }
+        .rule-title { color: #0056b3; font-size: 1.3rem; font-weight: 800; margin: 0 0 20px 0; padding-bottom: 15px; border-bottom: 2px solid #f8f9fa; display: flex; align-items: center; gap: 10px; }
+        .rule-title::before { content: "💡"; }
+        .rule-block { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-right: 4px solid #00a8cc; }
+        .rule-block.accent { border-right-color: #ff6b6b; }
+        .rule-name { font-weight: 800; color: #00a8cc; font-size: 1.1rem; margin-bottom: 15px; display: inline-block; }
+        .rule-block.accent .rule-name { color: #ff6b6b; }
+        .rule-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .rule-list li { background: #fff; padding: 12px 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.95rem; line-height: 1.6; }
+        .rule-keyword { font-weight: 800; color: #fff; background: #0056b3; padding: 4px 12px; border-radius: 20px; min-width: 50px; text-align: center; }
+        .rule-desc { color: #444; flex: 1; }
+        .rule-example { color: #28a745; font-weight: 700; background: #e8f5e9; padding: 4px 12px; border-radius: 8px; border: 1px dashed #28a745; }
+
+        /* 4. Under Maintenance */
+        .under-maintenance { text-align: center; padding: 40px 20px; background: #f8f9fa; border-radius: 15px; border: 2px dashed #ccc; color: #666; }
+        .under-maintenance i { font-size: 3rem; color: #00a8cc; margin-bottom: 15px; }
+
+        /* === MOBILE RESPONSIVENESS OVERRIDES === */
+        @media (max-width: 900px) { 
+            .lesson-right-col { grid-column: 1 / -1; } 
+            .lesson-left-col { grid-column: 1 / -1; order: -1; } 
+            .lesson-grid { display: flex; flex-direction: column; } 
+            .pdf-container { height: 60vh; }
+            .lesson-title-area h2 { font-size: 1.4rem; }
         }
 
-        /* Rich Text Formatting inside Tabs */
-        .l-tab-content ul { padding-right: 20px; margin-top: 10px; }
-        .l-tab-content li { margin-bottom: 10px; }
-        .l-tab-content strong { color: var(--primary); }
-        .l-tab-content p { margin-bottom: 15px; }
+        @media (max-width: 768px) {
+            .summary-wrapper, .vocab-grid { grid-template-columns: 1fr !important; }
+            .story-card, .vocab-item, .rule-section, .rule-block { padding: 15px !important; }
+            .l-tab-content { padding: 15px 10px !important; overflow-x: hidden !important; }
+            .vocab-item { flex-wrap: wrap !important; }
+            .vocab-word { width: 100%; margin-bottom: 5px; text-align: right; }
+            .rule-list li { flex-direction: column; align-items: flex-start; }
+            html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+
+            /* Mobile Tabs Overhaul (Grid Layout: 1 on top, 2 on bottom) */
+            .l-tabs-nav {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+                border-bottom: none !important;
+                overflow: hidden !important;
+                padding-bottom: 0 !important;
+            }
+
+            .l-tab-btn {
+                white-space: normal !important; /* Allow long text to wrap */
+                font-size: 0.85rem !important;
+                padding: 10px !important;
+                border-radius: 8px !important; /* Round all corners for grid look */
+                line-height: 1.4 !important;
+                height: 100% !important;
+                border: 1px solid #eef5fc !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+
+            /* Make the first tab (Index 0) take full width */
+            .l-tab-btn:first-child {
+                grid-column: 1 / -1 !important;
+                font-size: 0.95rem !important; /* Slightly larger for the main tab */
+                padding: 12px !important;
+            }
+
+            /* Change active state indicator for grid */
+            .l-tab-btn.active {
+                border-bottom: 1px solid #eef5fc !important;
+                background: var(--primary) !important;
+                color: #fff !important;
+                border: none !important;
+                box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3) !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -141,9 +194,7 @@
             <p id="unitDescription">جاري جلب تفاصيل الشرح...</p>
         </div>
 
-        <div id="lessonContent">
-            <!-- Dynamic content will be inserted here -->
-        </div>
+        <div id="lessonContent"></div>
 
         <div class="navigation-area">
             <button class="nav-btn" id="prevUnitBtn" onclick="changeUnit(-1)"><i class="fas fa-chevron-right"></i> السابق</button>
@@ -170,11 +221,8 @@
 
         window.openLessonTab = function(tabId, btnElement) {
             const container = btnElement.closest('.custom-tabs-container');
-            // Deactivate all
             container.querySelectorAll('.l-tab-btn').forEach(btn => btn.classList.remove('active'));
             container.querySelectorAll('.l-tab-content').forEach(content => content.classList.remove('active'));
-            
-            // Activate target
             btnElement.classList.add('active');
             container.querySelector('#' + tabId).classList.add('active');
         };
@@ -214,58 +262,86 @@
             document.getElementById('unitTitle').innerText = unit.title;
             document.getElementById('unitDescription').innerHTML = `<strong>${window.lessonData.pageTitle}</strong><br>${unit.description}`;
             
-            // Generate extra tabs if available
             let extraTabsNav = '';
             let extraTabsBody = '';
 
-            if (unit.extraTabs && Array.isArray(unit.extraTabs) && unit.extraTabs.length > 0) {
-                unit.extraTabs.forEach((tab, idx) => {
-                    const isActive = idx === 0 ? 'active' : '';
-                    const uniqueTabId = 'tab_' + unit.id + '_' + idx;
-                    
-                    extraTabsNav += `<button class="l-tab-btn ${isActive}" onclick="openLessonTab('${uniqueTabId}', this)">${tab.title}</button>`;
-                    extraTabsBody += `<div id="${uniqueTabId}" class="l-tab-content ${isActive}">${tab.content}</div>`;
-                });
-            }
+            // --- المولد الذكي للأقسام (Parser by Index) ---
+            let processedTabs = unit.extraTabs && Array.isArray(unit.extraTabs) ? unit.extraTabs : [];
+
+            processedTabs.forEach((tab, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                const uniqueTabId = 'tab_' + unit.id + '_' + index;
+                
+                extraTabsNav += `<button class="l-tab-btn ${isActive}" onclick="openLessonTab('${uniqueTabId}', this)">${tab.title}</button>`;
+                
+                let parsedHTML = "";
+                let rawText = tab.content ? tab.content.trim() : "";
+
+                // معالجة النصوص الصافية وتحويلها لتصميم بناءً على الترتيب (Index)
+                if (!rawText || rawText === "") {
+                    parsedHTML = `
+                        <div class="under-maintenance">
+                            <i class="fa-solid fa-person-digging"></i>
+                            <h3>هذا القسم قيد التحديث والصيانة</h3>
+                            <p>يتم إعداد المحتوى ليكون متاحاً قريباً، شكراً لانتظارك يا بطل!</p>
+                        </div>`;
+                } else if (index === 0) {
+                    parsedHTML = parseVocab(rawText);
+                } else if (index === 1) {
+                    parsedHTML = parseSummary(rawText);
+                } else if (index === 2) {
+                    parsedHTML = parseRules(rawText);
+                } else {
+                    parsedHTML = `<div style="padding:10px; line-height:1.8;">${rawText.replace(/\n/g, '<br>')}</div>`;
+                }
+
+                extraTabsBody += `<div id="${uniqueTabId}" class="l-tab-content ${isActive}">${parsedHTML}</div>`;
+            });
 
             let pdfLink = unit.pdf;
-            if(pdfLink && pdfLink.includes('/view')) {
-                pdfLink = pdfLink.replace('/view', '/preview');
+            if(pdfLink && pdfLink.includes('/view')) pdfLink = pdfLink.replace('/view', '/preview');
+
+            // Automatically convert YouTube links to embed format
+            let videoUrl = unit.vid || '';
+            if (videoUrl.includes('youtube.com/watch?v=')) {
+                videoUrl = videoUrl.replace('youtube.com/watch?v=', 'youtube.com/embed/');
+                videoUrl = videoUrl.split('&')[0]; // Clean up extra parameters
+            } else if (videoUrl.includes('youtu.be/')) {
+                videoUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
+                videoUrl = videoUrl.split('?')[0]; // Clean up extra parameters
             }
 
             const html = `
-<div class="unit-card" style="background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #eee;">
-    <div class="lesson-grid">
-        <div class="lesson-right-col">
-            <h3 style="color: var(--success); font-size: 1.2rem; margin-bottom: 15px;"><i class="fa-solid fa-file-pdf"></i> ملزمة الوحدة (PDF)</h3>
-            <div class="media-wrapper pdf-box">
-                <iframe src="${pdfLink}" loading="lazy"></iframe>
-            </div>
-        </div>
+            <div class="unit-card" style="background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #eee;">
+                <div class="lesson-grid">
+                    <div class="lesson-right-col">
+                        <h3 style="color: var(--success); font-size: 1.2rem; margin-bottom: 15px;"><i class="fa-solid fa-file-pdf"></i> ملزمة الوحدة (PDF)</h3>
+                        <div class="media-wrapper pdf-box">
+                            <iframe src="${pdfLink}" loading="lazy"></iframe>
+                        </div>
+                    </div>
 
-        <div class="lesson-left-col">
-            <h3 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 15px;"><i class="fa-solid fa-circle-play"></i> الشرح المرئي (فيديو)</h3>
-            <div class="media-wrapper vid-box">
-                <iframe src="${unit.vid}" allowfullscreen loading="lazy"></iframe>
-            </div>
+                    <div class="lesson-left-col">
+                        <h3 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 15px;"><i class="fa-solid fa-circle-play"></i> الشرح المرئي (فيديو)</h3>
+                        <div class="media-wrapper vid-box">
+                            <iframe src="${videoUrl}" allowfullscreen loading="lazy"></iframe>
+                        </div>
 
-            ${extraTabsNav ? `
-            <div class="custom-tabs-container" style="margin-top: 30px;">
-                <div class="l-tabs-nav">
-                    ${extraTabsNav}
+                        ${extraTabsNav ? `
+                        <div class="custom-tabs-container" style="margin-top: 30px;">
+                            <div class="l-tabs-nav">
+                                ${extraTabsNav}
+                            </div>
+                            <div class="l-tabs-body">
+                                ${extraTabsBody}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
                 </div>
-                <div class="l-tabs-body">
-                    ${extraTabsBody}
-                </div>
-            </div>
-            ` : ''}
-        </div>
-    </div>
-</div>
-`;
+            </div>`;
 
             document.getElementById('lessonContent').innerHTML = html;
-            
             document.getElementById('prevUnitBtn').disabled = (currentUnitIndex === 0);
             
             if(currentUnitIndex === units.length - 1) {
@@ -276,6 +352,118 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // --- دوال الترجمة من نصوص إلى تصميمات (Parsers) ---
+        function parseVocab(text) {
+            let html = '<div class="vocab-wrapper">';
+            let blocks = text.split(/\s*\[(.*?)\]\s*/).filter(b => b.trim() !== '');
+            const colors = ['#00a8cc', '#ff6b6b', '#28a745', '#ffc107', '#6f42c1'];
+            
+            for (let i = 0; i < blocks.length; i += 2) {
+                if (!blocks[i+1]) break;
+                let title = blocks[i].trim();
+                let lines = blocks[i+1].trim().split('\n');
+                let color = colors[(i/2) % colors.length];
+                
+                html += `<div class="lesson-group">
+                    <div class="lesson-header" style="border-right-color: ${color};">${title}</div>
+                    <div class="vocab-grid">`;
+                
+                lines.forEach(line => {
+                    let parts = line.split('|').map(p => p.trim());
+                    if (parts.length >= 3) {
+                        html += `<div class="vocab-item" style="border-right-color: ${color};">
+                            <span class="vocab-word">${parts[0]}</span> 
+                            <span class="vocab-relation" style="background: ${color};">${parts[1]}</span> 
+                            <span class="vocab-meaning">${parts[2]}</span>
+                        </div>`;
+                    }
+                });
+                html += `</div></div>`;
+            }
+            return html + '</div>';
+        }
+
+        function parseSummary(text) {
+            let html = '<div class="summary-wrapper">';
+            let blocks = text.split(/\s*\[(.*?)\]\s*/).filter(b => b.trim() !== '');
+            const colors = ['#0056b3', '#00a8cc', '#28a745', '#e83e8c'];
+
+            for (let i = 0; i < blocks.length; i += 2) {
+                if (!blocks[i+1]) break;
+                let title = blocks[i].trim();
+                let lines = blocks[i+1].trim().split('\n');
+                let color = colors[(i/2) % colors.length];
+
+                html += `<div class="story-card" style="border-right-color: ${color};">
+                    <div class="story-header"><h2 class="story-title" style="color: ${color};">${title}</h2></div>`;
+                
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (!line) return;
+                    if (line.includes('الدرس المستفاد:')) {
+                        html += `<div class="lesson-learned">${line.replace('الدرس المستفاد:', '<b>الدرس المستفاد:</b>')}</div>`;
+                    } else if (line.includes(':')) {
+                        let parts = line.split(/:(.+)/);
+                        html += `<div class="info-row"><span class="summary-label">${parts[0]}:</span> ${parts[1].trim()}</div>`;
+                    } else {
+                        html += `<div class="info-row">${line}</div>`;
+                    }
+                });
+                html += `</div>`;
+            }
+            return html + '</div>';
+        }
+
+        function parseRules(text) {
+            let html = '<div class="rules-wrapper">';
+            let mainBlocks = text.split(/\s*\[(.*?)\]\s*/).filter(b => b.trim() !== '');
+
+            for (let i = 0; i < mainBlocks.length; i += 2) {
+                if (!mainBlocks[i+1]) break;
+                let mainTitle = mainBlocks[i].trim();
+                let content = mainBlocks[i+1].trim();
+                
+                html += `<div class="rule-section">
+                    <h2 class="rule-title">${mainTitle}</h2>`;
+                
+                let subBlocks = content.split(/\s*\*(.*?)\*\s*/).filter(b => b.trim() !== '');
+                
+                for (let j = 0; j < subBlocks.length; j += 2) {
+                    if (!subBlocks[j+1]) break;
+                    let subTitle = subBlocks[j].trim();
+                    let lines = subBlocks[j+1].trim().split('\n');
+                    let isAccent = (j/2) % 2 !== 0 ? 'accent' : '';
+                    
+                    html += `<div class="rule-block ${isAccent}">
+                        <span class="rule-name">${subTitle}</span>
+                        <ul class="rule-list">`;
+                    
+                    lines.forEach(line => {
+                        line = line.trim();
+                        if(line.startsWith('-')) {
+                            line = line.substring(1).trim();
+                            let parts = line.split('=');
+                            let desc = parts[0].trim();
+                            let example = parts[1] ? `<span class="rule-example">${parts[1].trim()}</span>` : '';
+                            
+                            let keywordMatch = desc.match(/^([^:]+):(.*)/);
+                            if(keywordMatch && keywordMatch[1].length < 20) {
+                                html += `<li><span class="rule-keyword">${keywordMatch[1]}</span> <span class="rule-desc">${keywordMatch[2]}</span> ${example}</li>`;
+                            } else if (parts[1] && desc.length < 20) {
+                                html += `<li><span class="rule-keyword">${desc}</span> ${example}</li>`;
+                            } else {
+                                html += `<li><span class="rule-desc">${desc}</span> ${example}</li>`;
+                            }
+                        }
+                    });
+                    html += `</ul></div>`;
+                }
+                html += `</div>`;
+            }
+            return html + '</div>';
+        }
+
+        // --- باقي الدوال المساعدة ---
         function changeUnit(direction) {
             if(direction === 1) {
                 if(currentUnitIndex === units.length - 1) {
@@ -300,23 +488,10 @@
             loadUnit(); 
         }
         
-        function downloadPDF() { 
-            const url = units[currentUnitIndex].pdf.replace('/preview', '/view'); 
-            window.open(url, '_blank'); 
-        }
-        
-              function goToQuiz() { 
-            // التعديل هنا: ضفنا &unit= عشان يروح للامتحان محدد الوحدة اللي كان بيذاكرها
+        function goToQuiz() { 
             const revisionSubject = currentSubject.includes('_lesson') ? currentSubject.replace('_lesson', '_revision') : currentSubject + '_revision';
             window.location.href = `exam.html?subject=${revisionSubject}&unit=${currentUnitIndex + 1}`;
-        }
-
-        function openVideoFull() { 
-            const iframe = document.querySelector('.media-wrapper.vid-box iframe'); 
-            if (iframe.requestFullscreen) { iframe.requestFullscreen(); } 
-            else if (iframe.webkitRequestFullscreen) { iframe.webkitRequestFullscreen(); } 
         }
     </script>
 </body>
 </html>
-
