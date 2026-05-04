@@ -98,6 +98,9 @@
 <body>
 
     <header>
+        <button id="globalBackBtn" class="global-back-btn" onclick="handleGlobalBack()" title="رجوع">
+            <i class="fas fa-arrow-right"></i>
+        </button>
         <a href="index.html" class="logo-area">
             <img src="images/logo.webp" alt="شعار منهجي" class="custom-logo">
             <div class="logo-text"><h1>Manhaaji</h1></div>
@@ -275,6 +278,14 @@
                 heroElements.forEach(el => el.classList.add('show-element'));
             }, 50);
         });
+
+        function handleGlobalBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
     </script>
 </body>
 </html>

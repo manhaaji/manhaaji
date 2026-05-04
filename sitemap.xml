@@ -32,4 +32,48 @@
     <loc>https://manhaaji.com/legal/terms.html</loc>
     <priority>0.50</priority>
   </url>
+  <url>
+    <loc>https://manhaaji.com/exam.html?subject=arabic_g1_t1</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/lesson.html?subject=arabic_g1_t1</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/exam.html?subject=arabic_g1_t2</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/lesson.html?subject=arabic_g1_t2</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/exam.html?subject=nursing_g2_t2</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/lesson.html?subject=nursing_g2_t2</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/exam.html?subject=primary/g2/pri_g2_t2_arabic</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/lesson.html?subject=primary/g2/pri_g2_t2_arabic</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/revision.html?subject=arabic_g1_t1_revision</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/revision.html?subject=arabic_g1_t2_revision</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://manhaaji.com/revision.html?subject=primary/g2/pri_g2_t2_arabic_revision</loc>
+    <priority>0.80</priority>
+  </url>
 </urlset>

@@ -35,6 +35,30 @@
         .header-btn { background: var(--light); color: var(--primary); border: 1px solid var(--secondary); padding: 8px 20px; border-radius: 25px; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Cairo'; text-decoration: none; display: flex; align-items: center; gap: 8px;}
         .header-btn:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 86, 179, 0.2); }
 
+        .global-back-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            padding: 0;
+        }
+        .global-back-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,86,179,0.2);
+        }
+        .global-back-btn:active { transform: scale(0.95); }
+
         .page-hero { background: var(--gradient); padding: 60px 20px; text-align: center; color: var(--white); margin-bottom: 50px; border-radius: 0 0 40px 40px; box-shadow: 0 10px 30px rgba(0, 86, 179, 0.1); }
         .page-hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
         .page-hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
@@ -73,6 +97,9 @@
 <body>
 
     <header>
+        <button id="globalBackBtn" class="global-back-btn" onclick="handleGlobalBack()" title="رجوع">
+            <i class="fas fa-arrow-right"></i>
+        </button>
         <a href="../index.html" class="logo-area">
             <img src="../images/logo.webp" alt="شعار منهجي" class="custom-logo">
             <div class="logo-text"><h1>Manhaaji</h1></div>
@@ -147,6 +174,15 @@
         <p>جميع الحقوق محفوظة &copy; 2026 منصة منهجي (Manhaaji.com) | تصميم وتطوير مازن خالد</p>
     </footer>
 
+    <script>
+        function handleGlobalBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+    </script>
 </body>
 </html>
 
