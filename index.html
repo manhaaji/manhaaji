@@ -587,6 +587,16 @@
         }
 
         let pathHistory = []; 
+        const subjectRegistry = {
+            'arabic_g1_t1': { unitsCount: 4 },
+            'arabic_g1_t2': { unitsCount: 4 },
+            'primary/g2/pri_g2_t1_arabic': { unitsCount: 4 },
+            'primary/g2/pri_g2_t2_arabic': { unitsCount: 4 },
+            'primary/g2/pri_g2_t1_english': { unitsCount: 5 },
+            'primary/g2/pri_g2_t2_english': { unitsCount: 5 }
+        };
+        const unitIcons = ['fa-home', 'fa-book-open', 'fa-globe', 'fa-flask', 'fa-landmark', 'fa-star'];
+        const arabicUnitLabels = ['الوحدة الأولى', 'الوحدة الثانية', 'الوحدة الثالثة', 'الوحدة الرابعة', 'الوحدة الخامسة', 'الوحدة السادسة', 'الوحدة السابعة', 'الوحدة الثامنة', 'الوحدة التاسعة', 'الوحدة العاشرة'];
         const homeGrid = document.getElementById('home-grid'); const heroSection = document.getElementById('hero-section'); const dynamicFlow = document.getElementById('dynamic-flow'); const flowContent = document.getElementById('flow-content'); const flowTitle = document.getElementById('flow-title'); const loader = document.getElementById('loader');
 
         function simulateLoading(callback) { 
@@ -697,7 +707,7 @@
             } else if (dept === 'الابتدائية' && cls === 'الصف الأول') {
                 flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-language"></i> اللغة العربية</button><button class="option-btn" onclick="selectSubject('الرياضيات')"><i class="fas fa-subscript"></i> الرياضيات</button><button class="option-btn" onclick="selectSubject('اللغة الإنجليزية')"><i class="fas fa-font"></i> اللغة الإنجليزية</button>`;
             } else if (dept === 'الابتدائية' && cls === 'الصف الثاني') {
-                flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-book"></i> اللغة العربية</button>`;
+                flowContent.innerHTML = `<button class="option-btn" onclick="selectSubject('اللغة العربية')"><i class="fas fa-book"></i> اللغة العربية</button><button class="option-btn" onclick="selectSubject('اللغة الإنجليزية')"><i class="fas fa-font"></i> اللغة الإنجليزية</button>`;
             } else {
                 flowContent.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px;"><i class="fas fa-tools" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i><h3 style="color: var(--text-muted);">جاري تجهيز وإضافة المواد لهذا القسم قريباً...</h3></div>`;
             }
@@ -727,21 +737,54 @@
                     } else if (cls === 'الصف الثاني') {
                         fileCode = 'primary/g2/pri_g2_' + termCode + '_arabic';
                     }
-                    if (action === 'شرح المنهج') { renderArabicUnits(fileCode); } 
-                    else if (action === 'المراجعات والتلاخيص') { renderArabicUnits(fileCode + '_revision', true); }
+                    if (action === 'شرح المنهج') { renderUnits(fileCode); } 
+                    else if (action === 'المراجعات والتلاخيص') { renderUnits(fileCode + '_revision', true); }
                     else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=${fileCode}_revision`; }
                 } else if (subject === 'تمريض الباطنة والجراحة') {
                     if (action === 'المراجعات والتلاخيص') { renderNursingChapters(); } 
                     else if (action === 'الامتحان الذكي') { window.location.href = `exam.html?subject=nursing_g2_t2`; } 
                     else { alert('شرح المنهج لهذا القسم قيد التجهيز...'); }
+                } else if (subject === 'اللغة الإنجليزية') {
+                    const cls = pathHistory[1].value;
+                    const termCode = term === 'الترم الثاني' ? 't2' : 't1';
+                    let fileCode;
+                    if (cls === 'الصف الثاني') {
+                        fileCode = 'primary/g2/pri_g2_' + termCode + '_english';
+                    }
+                    if (!fileCode) {
+                        alert('هذا القسم غير متوفر حالياً للصف المحدد.');
+                        return;
+                    }
+                    if (action === 'شرح المنهج') {
+                        renderUnits(fileCode);
+                    } else if (action === 'المراجعات والتلاخيص') {
+                        renderUnits(fileCode + '_revision', true);
+                    } else if (action === 'الامتحان الذكي') {
+                        window.location.href = `exam.html?subject=${fileCode}_revision`; }
                 } else { alert('هذا القسم قيد التجهيز حالياً...'); }
             });
         }
 
-        function renderArabicUnits(subjectCode, isRevision = false) {
+        function renderUnits(subjectCode, isRevision = false) {
             updateBreadcrumb();
-            const targetPage = isRevision ? 'revision.html' : 'lesson.html'; const param = isRevision ? 'ch' : 'unit'; 
-            flowContent.innerHTML = `<button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=1'"><i class="fas fa-home" style="color:var(--primary);"></i> الوحدة الأولى</button><button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=2'"><i class="fas fa-paw" style="color:var(--primary);"></i> الوحدة الثانية</button><button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=3'"><i class="fas fa-child" style="color:var(--primary);"></i> الوحدة الثالثة</button><button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=4'"><i class="fas fa-school" style="color:var(--primary);"></i> الوحدة الرابعة</button>`;
+            const targetPage = isRevision ? 'revision.html' : 'lesson.html';
+            const param = isRevision ? 'ch' : 'unit';
+            const normalizedCode = subjectCode.replace(/_revision$/, '');
+            const subjectConfig = subjectRegistry[normalizedCode] || { unitsCount: 4 };
+            const unitsCount = subjectConfig.unitsCount;
+            const isEnglish = normalizedCode.toLowerCase().includes('english');
+            let unitsHtml = '';
+
+            for (let i = 1; i <= unitsCount; i++) {
+                const icon = unitIcons[(i - 1) % unitIcons.length];
+                const label = isEnglish
+                    ? `Unit ${i}`
+                    : (arabicUnitLabels[i - 1] || `الوحدة ${i}`);
+
+                unitsHtml += `<button class="option-btn" onclick="window.location.href='${targetPage}?subject=${subjectCode}&${param}=${i}'"><i class="fas ${icon}" style="color:var(--primary);"></i> ${label}</button>`;
+            }
+
+            flowContent.innerHTML = unitsHtml;
         }
 
         function renderNursingChapters() {

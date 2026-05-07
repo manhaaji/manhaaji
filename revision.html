@@ -405,7 +405,7 @@
                         currentChapter = requestedCh;
                     }
 
-                    buildAllChapters();
+                    buildAllChapters(subject);
                     document.getElementById('loader').style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
                     showChapter(currentChapter);
@@ -420,7 +420,7 @@
             document.head.appendChild(script);
         };
 
-        function buildAllChapters() {
+        function buildAllChapters(subject) {
             const container = document.getElementById('chapters-wrapper');
             let html = '';
 
@@ -435,7 +435,7 @@
                     const isActive = index === 0 ? 'active' : '';
                     tabsButtonsHtml += `<button class="tab-btn ${isActive}" onclick="switchTab('${tab.key}-${i}', this, ${i})">${tab.label}</button>`;
                     
-                    tabsContentHtml += `<div id="${tab.key}-${i}" class="section-content ${isActive}"><div class="cards-grid">${buildCards(ch[tab.key], tab.key)}</div></div>`;
+                    tabsContentHtml += `<div id="${tab.key}-${i}" class="section-content ${isActive}"><div class="cards-grid">${buildCards(ch[tab.key], tab.key, subject)}</div></div>`;
                 });
 
                 html += `
@@ -447,7 +447,7 @@
             container.innerHTML = html;
         }
 
-        function buildCards(dataArray, type) {
+        function buildCards(dataArray, type, subject) {
             if(!dataArray || dataArray.length === 0) return `<h3 style="text-align:center; width:100%; color:#777; margin-top: 40px;">عفواً، جاري إضافة تدريبات هذا القسم.</h3>`;
             
             let html = '';
@@ -455,11 +455,11 @@
                 
                 // Check if this is a matching question
                 if(type === 'matching' || item.type === 'matching' || (item.colA && item.colB && item.answers)) {
-                    const isEnglish = /[a-zA-Z]/.test(item.q_ar || item.q_eng || "");
+                    const isEnglish = /[a-zA-Z]/.test(item.q || item.q_eng || item.q_ar || "");
                     const dir = isEnglish ? 'ltr' : 'rtl';
                     
                     // 1. CLEAN THE TITLE: Remove anything after the first '(' to hide the ugly raw array text.
-                    let rawTitle = item.q_ar || item.q_eng || "صل الكلمة بما يناسبها:";
+                    let rawTitle = item.q_ar || item.q || item.q_eng || "صل الكلمة بما يناسبها:";
                     let cleanTitle = rawTitle.split('(')[0].trim();
                     
                     // 2. AUTO-GENERATE TEXT ANSWER: Convert {"أ":"3", "ب":"1"} into "(أ مع 3 ، ب مع 1)"
@@ -533,9 +533,12 @@
                 let answerSection = '';
                 const formattedExp = formatExplanation(item.exp);
 
-                if (item.q_eng && item.q_eng.trim() !== "") {
-                    questionSection = `<div class="question-eng eng-text">${item.q_eng} ${optionsHtml}</div><div class="question-ar ar-text">${item.q_ar}</div>`;
-                    answerSection = `<div class="answer-eng eng-text ${answerColorClass} ${borderClass}"><i class="fas ${iconClass}"></i> Answer: <br> ${item.a_eng}</div><div class="answer-ar ar-text">${item.a_ar}</div>`;
+                if (subject.includes('nursing') || subject.includes('english')) {
+                    const englishQuestion = item.q || item.q_eng || "";
+                    const englishAnswer = item.a || item.a_eng || "";
+                    const arabicAnswer = item.a_ar || "";
+                    questionSection = `<div class="question-eng eng-text">${englishQuestion} ${optionsHtml}</div><div class="question-ar ar-text">${item.q_ar}</div>`;
+                    answerSection = `<div class="answer-eng eng-text ${answerColorClass} ${borderClass}"><i class="fas ${iconClass}"></i> Answer: <br> ${englishAnswer}</div>${arabicAnswer ? `<div class="answer-ar ar-text">${arabicAnswer}</div>` : ''}`;
                 } else {
                     questionSection = `
                         ${mediaSection}

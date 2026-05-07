@@ -445,9 +445,16 @@
                     const rectNumber = boxNumber.getBoundingClientRect();
 
                     // In RTL: Letter on RIGHT, Number on LEFT. Draw from inner edge of right-item to inner edge of left-item.
-                    const x1 = rectLetter.left - cRect.left; 
+                    const isEnglishMatchLayout = currentSubjectKey && (currentSubjectKey.includes('nursing') || currentSubjectKey.includes('english'));
+                    let x1, x2;
+                    if (isEnglishMatchLayout) {
+                        x1 = rectLetter.right - cRect.left;
+                        x2 = rectNumber.left - cRect.left;
+                    } else {
+                        x1 = rectLetter.left - cRect.left;
+                        x2 = rectNumber.right - cRect.left;
+                    }
                     const y1 = rectLetter.top + (rectLetter.height / 2) - cRect.top;
-                    const x2 = rectNumber.right - cRect.left;
                     const y2 = rectNumber.top + (rectNumber.height / 2) - cRect.top;
 
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -655,6 +662,7 @@
 
         function renderQuestions() {
             const container = document.getElementById('questionsContainer');
+            const isEnglishLayout = currentSubjectKey && (currentSubjectKey.includes('nursing') || currentSubjectKey.includes('english'));
             let html = '';
             selectedQuestions.forEach((q, index) => {
                 let savedAnswer = examState.answers[`q_${index}`] || '';
@@ -662,14 +670,15 @@
                 let skipClass = isSkipped ? 'skipped' : '';
                 
                 let inputHtml = '';
+                const optionGridStyle = isEnglishLayout ? 'direction: ltr; text-align: left; font-family: Poppins, sans-serif;' : '';
                 if(q.type === 'tf') {
-                    inputHtml = `<div class="options-grid" style="grid-template-columns: 1fr 1fr;">
+                    inputHtml = `<div class="options-grid" style="grid-template-columns: 1fr 1fr; ${optionGridStyle}">
                             <label class="option-lbl"><input type="radio" name="q_${index}" value="true" ${savedAnswer==='true'?'checked':''} onchange="saveAnswer(${index}, this.value)"> صح</label>
                             <label class="option-lbl"><input type="radio" name="q_${index}" value="false" ${savedAnswer==='false'?'checked':''} onchange="saveAnswer(${index}, this.value)"> خطأ</label>
                         </div>`;
                 } else if (q.type === 'mcq') {
                     let options = q.options || []; 
-                    inputHtml = `<div class="options-grid">`;
+                    inputHtml = `<div class="options-grid" style="${optionGridStyle}">`;
                     options.forEach(opt => {
                         let cleanOpt = opt.replace(/^[أبجده]\.\s*/, '');
                         inputHtml += `<label class="option-lbl"><input type="radio" name="q_${index}" value="${cleanOpt}" ${savedAnswer===cleanOpt?'checked':''} onchange="saveAnswer(${index}, this.value)"> ${cleanOpt}</label>`;
@@ -679,7 +688,7 @@
                     // Utility function to shuffle array (place outside the loop if needed)
                     const shuffleArray = array => [...array].sort(() => Math.random() - 0.5);
 
-                    const isEnglish = /[a-zA-Z]/.test(q.q_ar || q.q_eng || "");
+                    const isEnglish = isEnglishLayout || /[a-zA-Z]/.test(q.q || q.q_ar || q.q_eng || "");
                     const dir = isEnglish ? 'ltr' : 'rtl';
                     const uniqueId = 'exam_match_' + index;
 
@@ -699,18 +708,20 @@
                         colB_HTML += `<div class="match-box left-item" data-id="${item.id}" onclick="handleMatchClick(this)"><div class="match-badge">${item.id}</div> <span>${item.text}</span></div>`;
                     });
 
-                    const rightSideHTML = colA_HTML; // Put right-items on the right
-                    const leftSideHTML = colB_HTML;  // Put left-items on the left
+                    const leftSideHTML = isEnglish ? colA_HTML : colB_HTML;
+                    const rightSideHTML = isEnglish ? colB_HTML : colA_HTML;
+                    const matchQuestionText = isEnglish ? (q.q || q.q_eng || '') : (q.q_ar || q.q_eng || '');
 
                     inputHtml = `
                     <div class="match-exam-wrapper" dir="${dir}">
-                        <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 5px; font-size: 1.1rem;">${index + 1}. ${q.q_ar || q.q_eng}</h4>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">(اضغط على الحرف من اليمين ثم اضغط على الرقم المقابل من اليسار لتوصيلهما. لحذف إجابة، اضغط على الحرف مرة أخرى).</p>
+                        <h4 style="color: var(--primary); font-weight: bold; margin-bottom: 5px; font-size: 1.1rem; text-align: ${isEnglish ? 'left' : 'right'};">${index + 1}. ${matchQuestionText}</h4>
+                        ${isEnglish && q.q_ar ? `<div class="ar-text" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; text-align: right;">${q.q_ar}</div>` : ''}
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">${isEnglish ? '(اضغط على الحرف من اليسار ثم اضغط على الرقم المقابل من اليمين لتوصيلهما. لحذف إجابة، اضغط على الحرف مرة أخرى).' : '(اضغط على الحرف من اليمين ثم اضغط على الرقم المقابل من اليسار لتوصيلهما. لحذف إجابة، اضغط على الحرف مرة أخرى).'}</p>
                         
                         <div class="match-container" id="${uniqueId}">
                             <svg class="match-svg-layer"></svg>
-                            <div class="match-col">${rightSideHTML}</div>
                             <div class="match-col">${leftSideHTML}</div>
+                            <div class="match-col">${rightSideHTML}</div>
                             <input type="hidden" id="input_${uniqueId}" name="q_${index}" value="{}">
                         </div>
                     </div>`;
@@ -718,7 +729,9 @@
                     inputHtml = `<textarea class="text-answer" name="q_${index}" oninput="saveAnswer(${index}, this.value)" placeholder="اكتب إجابتك هنا...">${savedAnswer}</textarea>`;
                 }
 
-                let questionText = q.q_eng ? `<div class="eng-text-q">${q.q_eng}</div>` : `<div class="ar-text">${q.q_ar}</div>`;
+                const englishQuestion = q.q || q.q_eng || '';
+                const arabicTranslation = q.q_ar || '';
+                let questionText = isEnglishLayout ? `<div class="eng-text-q">${englishQuestion}</div>${arabicTranslation ? `<div class="ar-text" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 5px;">${arabicTranslation}</div>` : ''}` : `<div class="ar-text">${arabicTranslation}</div>`;
 
                 html += `
                 <div class="question-card ${skipClass}" id="card_${index}" data-q-type="${q.type}">
@@ -903,7 +916,9 @@
         function buildReviewCard(index, q, studentAns, correctAns, isCorrect, earnedPoints) {
             let status = isCorrect ? 'correct' : 'wrong';
             let icon = isCorrect ? '<i class="fas fa-check" style="color:var(--success);"></i>' : '<i class="fas fa-times" style="color:var(--danger);"></i>';
-            let questionText = q.q_eng ? `<div class="eng-text-q" style="font-size:1.1rem;">${q.q_eng}</div><div class="ar-text" style="color:var(--text-muted); font-size:0.95rem; margin-top:5px;">(الترجمة: ${q.q_ar})</div>` : q.q_ar;
+            const reviewEnglishQuestion = q.q || q.q_eng || '';
+            const reviewArabicTranslation = q.q_ar || '';
+            let questionText = (currentSubjectKey && (currentSubjectKey.includes('nursing') || currentSubjectKey.includes('english'))) ? `<div class="eng-text-q" style="font-size:1.1rem;">${reviewEnglishQuestion}</div>${reviewArabicTranslation ? `<div class="ar-text" style="color:var(--text-muted); font-size:0.95rem; margin-top:5px;">(الترجمة: ${reviewArabicTranslation})</div>` : ''}` : reviewArabicTranslation;
             return `<div class="review-card ${status}"><div style="font-weight:700; margin-bottom:10px; color:var(--dark);">${index + 1}. ${questionText} <span style="float:left; font-size:0.85rem; background:#ddd; padding:2px 8px; border-radius:5px;">${earnedPoints}/${q.points} نقطة</span></div><div>إجابتك: <strong style="font-family:'Poppins', 'Cairo';">${studentAns}</strong> ${icon}</div>${!isCorrect ? `<div class="model-answer">الإجابة الصحيحة: <span style="font-family:'Poppins', 'Cairo';">${correctAns}</span><br><span style="font-size:0.85rem; color:#555;">الشرح: ${q.exp || 'لا يوجد شرح إضافي'}</span></div>` : ''}</div>`;
         }
 
